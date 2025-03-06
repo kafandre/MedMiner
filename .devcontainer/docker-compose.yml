@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  project:  # TODO change this to your project name
-    container_name: project  # TODO change this to your project name
+  medminer:
+    container_name: medminer
     extra_hosts:
       - host.docker.internal:host-gateway
     init: true

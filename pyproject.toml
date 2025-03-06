@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "project_name"  # TODO
-description = "Template for python project"  # TODO
+name = "medminer"
+description = "Project to use LLM agents for text analysis in the medical field"
 version = "1.0.0"
 license = "MIT"
-authors = ["Paul-B98 <115164840+Paul-B98@users.noreply.github.com>"]  # TODO
+authors = ["AIDH MS"]
 readme = "README.md"
-homepage = "https://github.com/Paul-B98/python-project-template"  # TODO
-repository = "https://github.com/Paul-B98/python-project-template"  # TODO
-documentation = "https://github.com/Paul-B98/python-project-template"  # TODO
-keywords = [""]  # TODO
+homepage = "https://github.com/aidh-ms/MedMiner"
+repository = "https://github.com/aidh-ms/MedMiner"
+documentation = "https://github.com/aidh-ms/MedMiner"
+keywords = ["llm", "agents", "ai", "ml", "medical"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -16,8 +16,8 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-Changelog = "https://github.com/Paul-B98/python-project-template"  # TODO
-Bugtracker = "https://github.com/Paul-B98/python-project-template"  # TODO
+Changelog = "https://github.com/aidh-ms/MedMiner/releases"
+Bugtracker = "https://github.com/aidh-ms/MedMiner/issues"
 
 [tool.poetry.dependencies]
 python = "^3.13"

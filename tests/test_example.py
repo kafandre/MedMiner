@@ -1,4 +1,4 @@
-from project_name.main import run
+from medminer.main import run
 
 
 def test_placeholder() -> None:

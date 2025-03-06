@@ -1,7 +1,7 @@
 {
-	"name": "Python project",
+	"name": "MedMiner project",
 	"dockerComposeFile": "docker-compose.yml",
-	"service": "project",
+	"service": "medminer",
 	"workspaceFolder": "/workspaces",
 	"remoteUser": "vscode",
 	"mounts": [
@@ -38,7 +38,7 @@
 					"--config-file=${workspaceFolder}/pyproject.toml"
 				],
 				"python.analysis.typeCheckingMode": "basic",
-				"coverage-gutters.coverageBaseDir": "/workspaces/src",
+				"coverage-gutters.coverageBaseDir": "/workspaces/medminer",
 				"coverage-gutters.coverageFileNames": [
 					"coverage.xml"
 				]

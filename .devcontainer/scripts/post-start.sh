@@ -1,1 +1,1 @@
-poetry install --with dev,docs
+poetry install --with dev,docs,openai

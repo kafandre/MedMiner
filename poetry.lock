@@ -955,7 +955,7 @@ version = "3.1.6"
 description = "A very fast and expressive template engine."
 optional = false
 python-versions = ">=3.7"
-groups = ["dev", "docs"]
+groups = ["docs"]
 markers = "platform_python_implementation == \"PyPy\""
 files = [
     {file = "jinja2-3.1.6-py3-none-any.whl", hash = "sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"},
@@ -1406,7 +1406,7 @@ version = "3.0.2"
 description = "Safely add untrusted strings to HTML/XML markup."
 optional = false
 python-versions = ">=3.9"
-groups = ["dev", "docs"]
+groups = ["docs"]
 markers = "platform_python_implementation == \"PyPy\""
 files = [
     {file = "MarkupSafe-3.0.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:7e94c425039cde14257288fd61dcfb01963e658efbc0ff54f5306b06054700f8"},
@@ -1784,15 +1784,15 @@ python-legacy = ["mkdocstrings-python-legacy (>=0.2.1)"]
 
 [[package]]
 name = "mkdocstrings-python"
-version = "1.16.5"
+version = "1.16.6"
 description = "A Python handler for mkdocstrings."
 optional = false
 python-versions = ">=3.9"
 groups = ["docs"]
 markers = "platform_python_implementation == \"PyPy\""
 files = [
-    {file = "mkdocstrings_python-1.16.5-py3-none-any.whl", hash = "sha256:0899a12e356eab8e83720c63e15d0ff51cd96603216c837618de346e086b39ba"},
-    {file = "mkdocstrings_python-1.16.5.tar.gz", hash = "sha256:706b28dd0f59249a7c22cc5d517c9521e06c030b57e2a5478e1928a58f900abb"},
+    {file = "mkdocstrings_python-1.16.6-py3-none-any.whl", hash = "sha256:de877dd71f69878c973c4897a39683b7b6961bee7b058879095b69681488453f"},
+    {file = "mkdocstrings_python-1.16.6.tar.gz", hash = "sha256:cefe0f0e17ab4a4611f01b0a2af75e4298664e0ff54feb83c91a485bfed82dc9"},
 ]
 
 [package.dependencies]
@@ -3702,4 +3702,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "d055baac40d3aef8aefa699da8d38a885f049b5cde1b9e5294399f41f473caaf"
+content-hash = "da68bc34d69e3b1f823ba4957ac54ba2cdd7686e5d2a259bd9fe48b51cbf788d"

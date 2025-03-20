@@ -22,18 +22,16 @@ class Task:
     def agent(self) -> Type[MultiStepAgent]:
         match self.agent_type:
             case Agent.CODEAGENT:
-                return CodeAgent
+                return CodeAgent  # type: ignore[no-any-return]
             case Agent.TOOLCALLINGAGENT:
-                return ToolCallingAgent
+                return ToolCallingAgent  # type: ignore[no-any-return]
             case Agent.MULTISTEPAGENT:
-                return MultiStepAgent
+                return MultiStepAgent  # type: ignore[no-any-return]
             case _:
                 return ToolCallingAgent
 
     def run(self, model: Model, **kwargs: Any) -> Any:
         kwargs = self.agent_params | kwargs
         agent = self.agent(self.tools, model, **kwargs)
-        
-        return agent.run(self.prompt)
 
-        
+        return agent.run(self.prompt)

@@ -24,7 +24,7 @@ python = "^3.13"
 smolagents = "^1.11.0"
 
 [tool.poetry.group.openai.dependencies]
-openai = "^1.67.0"
+openai = "^1.68.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.15.0"

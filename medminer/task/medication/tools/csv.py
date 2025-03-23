@@ -49,7 +49,7 @@ def save_csv(
     with open(file_path, "a") as csvfile:
         writer = DictWriter(csvfile, fieldnames=fieldnames)
 
-        if file_path.exists():
+        if file_path.exists() and file_path.stat().st_size == 0:
             writer.writeheader()
 
         writer.writerow(

@@ -39,12 +39,12 @@ class Task:
         return agent.run(
             dedent(
                 f"""
-            Task name: {self.name}
-            Prompt:
-                {self.prompt}
+                Task name: {self.name}
+                Prompt:
+                    {self.prompt}
 
-            ---
-            {data}
-        """
+                ---
+                {data}
+                """
             )
         )

@@ -13,6 +13,6 @@ class Document:
             f"""
             Patiend: {self.patient_id}
 
-            {self.content}
+            {self.text}
         """
         )

@@ -21,18 +21,18 @@ Bugtracker = "https://github.com/aidh-ms/MedMiner/issues"
 
 [tool.poetry.dependencies]
 python = "^3.13"
-smolagents = "^1.11.0"
+smolagents = "^1.12.0"
 httpx = "^0.28.1"
 
 [tool.poetry.group.openai.dependencies]
-openai = "^1.67.0"
+openai = "^1.68.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.15.0"
 pytest = "^8.3.5"
 coverage = "^7.7.0"
 pytest-cov = "^6.0.0"
-ruff = "^0.11.0"
+ruff = "^0.11.2"
 pytest-asyncio = "^0.25.3"
 pytest-recording = "^0.13.1"
 pytest-random-order = "^1.1.1"
@@ -42,7 +42,7 @@ jupyter = "^1.1.1"
 mkdocs = "^1.6.1"
 mkdocs-material = "^9.6.9"
 pymdown-extensions = "^10.14.3"
-mkdocstrings-python = "^1.16.6"
+mkdocstrings-python = "^1.16.7"
 mkdocs-macros-plugin = "^1.3.7"
 mkdocs-gen-files = "^0.5.0"
 mkdocs-literate-nav = "^0.6.2"

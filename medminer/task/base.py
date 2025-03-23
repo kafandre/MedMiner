@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import StrEnum, auto
 from textwrap import dedent
 from typing import Any, Type
@@ -16,9 +16,9 @@ class Agent(StrEnum):
 class Task:
     name: str
     prompt: str
-    tools: list[Tool] = []
     agent_type: Agent = Agent.TOOLCALLINGAGENT
-    agent_params: dict[str, Any] = {}
+    tools: list[Tool] = field(default_factory=list)
+    agent_params: dict[str, Any] = field(default_factory=dict)
 
     @property
     def agent(self) -> Type[MultiStepAgent]:

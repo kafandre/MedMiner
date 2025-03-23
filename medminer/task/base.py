@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import StrEnum, auto
+from textwrap import dedent
 from typing import Any, Type
 
 from smolagents import CodeAgent, Model, MultiStepAgent, Tool, ToolCallingAgent
@@ -13,6 +14,7 @@ class Agent(StrEnum):
 
 @dataclass
 class Task:
+    name: str
     prompt: str
     tools: list[Tool] = []
     agent_type: Agent = Agent.TOOLCALLINGAGENT
@@ -30,8 +32,19 @@ class Task:
             case _:
                 return ToolCallingAgent
 
-    def run(self, model: Model, **kwargs: Any) -> Any:
+    def run(self, model: Model, data: str, **kwargs: Any) -> Any:
         kwargs = self.agent_params | kwargs
         agent = self.agent(self.tools, model, **kwargs)
 
-        return agent.run(self.prompt)
+        return agent.run(
+            dedent(
+                f"""
+            Task name: {self.name}
+            Prompt:
+                {self.prompt}
+
+            ---
+            {data}
+        """
+            )
+        )

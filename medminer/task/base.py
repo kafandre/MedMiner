@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import StrEnum, auto
-from textwrap import dedent
+from textwrap import dedent, indent
 from typing import Any, Type
 
 from smolagents import CodeAgent, Model, MultiStepAgent, Tool, ToolCallingAgent
@@ -38,13 +38,12 @@ class Task:
 
         return agent.run(
             dedent(
-                f"""
+                f"""\
                 Task name: {self.name}
-                Prompt:
-                    {self.prompt}
+                Prompt: \n{indent(self.prompt, " " * 4 * 5)}
 
-                ---
-                {data}
+                {"-" * 80}
+                Data: \n{indent(data, " " * 4 * 5)}
                 """
             )
         )

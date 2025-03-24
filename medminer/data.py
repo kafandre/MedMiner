@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from textwrap import dedent
+from textwrap import dedent, indent
 
 
 @dataclass
@@ -10,9 +10,7 @@ class Document:
     @property
     def content(self) -> str:
         return dedent(
-            f"""
-            Patiend: {self.patient_id}
-
-            {self.text}
-        """
+            f"""\
+            Patiend: {self.patient_id}\n{indent(self.text, " " * 4 * 3)}
+            """
         )

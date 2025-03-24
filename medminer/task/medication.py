@@ -6,7 +6,7 @@ from medminer.tools import save_csv
 medication_task = Task(
     name="medication",
     prompt=dedent(
-        """
+        """\
         Given a list of medications, save all medications for the patient as csv.
         If you detect any spelling mistakes of the medication name, please correct them.
 

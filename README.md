@@ -1,15 +1,6 @@
-# Python Project Template
+# MedMiner
 
-This is a template for creating Python projects. It includes a basic project structure, configuration files, and setup scripts to help you get started quickly.
-
-## Features
-
-- 📁 Pre-configured with `poetry` for dependency management
-- 🪛 Linting with `ruff`
-- 🔧 Type checking with `mypy`
-- 🧪 Testing with `pytest`
-- 📝 Pre-commit hooks for code quality
-- 📦 Uses `dev container` for development setup
+MedMiner leverages large language models (LLMs) and SmolAgents from Hugging Face to extract and analyze data from medical documents efficiently.
 
 ## Getting Started
 
@@ -18,7 +9,7 @@ This is a template for creating Python projects. It includes a basic project str
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/Paul-B98/python-project-template.git
+    git clone https://github.com/aidh-ms/MedMiner.git
     cd python-project-template
     ```
 

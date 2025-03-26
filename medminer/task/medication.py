@@ -14,8 +14,8 @@ medication_task = Task(
         - patient_id: The patient ID.
         - medication_name: The name of the medication in the document.
         - medication_name_corrected: The corrected name of the medication.
-        - dose: The dose of the medication.
-        - unit: The unit of the dose. if not applicable, write an empty string.
+        - dose: The dose of the medication. this sould only contain the numeric value.
+        - unit: The unit of the dose (e.g. ml, mg, ...). if not applicable, write an empty string.
         - dosage_morning: The dose in the morning. if not applicable, write a 0.
         - dosage_noon: The dose in the noon. if not applicable, write a 0.
         - dosage_evening: The dose in the evening. if not applicable, write a 0.

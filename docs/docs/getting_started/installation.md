@@ -25,12 +25,12 @@ The library can be installed from source (GitHub).
 
 **With pip**
 ```bash
-pip install git+https://github.com/Paul-B98/python-project-template
+pip install git+https://github.com/aidh-ms/MedMiner.git
 ```
 
 **With poetry**
 ```bash
-poetry add git+https://github.com/Paul-B98/python-project-template
+poetry add git+https://github.com/aidh-ms/MedMiner.git
 ```
 
 ## Dependencies

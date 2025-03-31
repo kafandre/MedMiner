@@ -1,14 +1,27 @@
 from textwrap import dedent
 
 from medminer.task import Task
-from medminer.tools import save_csv
+from medminer.tools import get_medication_into, save_csv
 
 medication_task = Task(
     name="medication",
     prompt=dedent(
         """\
         Given a list of medications, save all medications for the patient as csv.
-        If you detect any spelling mistakes of the medication name, please correct them.
+        To complete the task make the following steps:
+        1. extract the following information from the document:
+            - patient_id: The patient ID.
+            - medication_name: The name of the medication in the document.
+            - dose: The dose of the medication.
+            - unit: The unit of the dose (e.g. ml, mg, ...).
+            - dosage_morning: The dose in the morning.
+            - dosage_noon: The dose in the noon.
+            - dosage_evening: The dose in the evening.
+            - dosage_night: The dose in the night.
+            - dosage_information: Additional information about the dosage.
+        2. correct the medication name if it is misspelled or use the brand name and print them out.
+        3. get the ATC code of the now corrected medication name.
+        4 save the medication information as csv.
 
         save the the following columns:
         - patient_id: The patient ID.
@@ -21,7 +34,10 @@ medication_task = Task(
         - dosage_evening: The dose in the evening. if not applicable, write a 0.
         - dosage_night: The dose in the night. if not applicable, write a 0.
         - dosage_information: Additional information about the dosage. if not applicable, write an empty string.
+        - atc_id: The ATC code of the medication. if not applicable, write an empty string.
+        - atc_name: The name of the ATC code. if not applicable, write an empty string.
+        - atc_type: The type of the ATC code. if not applicable, write an empty string.
         """
     ),
-    tools=[save_csv],
+    tools=[save_csv, get_medication_into],
 )

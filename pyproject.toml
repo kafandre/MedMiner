@@ -21,8 +21,9 @@ Bugtracker = "https://github.com/aidh-ms/MedMiner/issues"
 
 [tool.poetry.dependencies]
 python = "^3.13"
-smolagents = "^1.12.0"
+smolagents = {extras = ["transformers"], version = "^1.12.0"}
 httpx = "^0.28.1"
+torch = "^2.6.0"
 
 [tool.poetry.group.openai.dependencies]
 openai = "^1.69.0"

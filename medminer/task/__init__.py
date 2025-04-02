@@ -1,3 +1,3 @@
-from medminer.task.base import Task
+from medminer.task.base import Agent, Task
 
-__all__ = ["Task"]
+__all__ = ["Task", "Agent"]

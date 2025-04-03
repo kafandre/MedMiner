@@ -1,7 +1,7 @@
 from textwrap import dedent
 
 from medminer.task import Task
-from medminer.tools import extract_data, get_medication_into, save_csv
+from medminer.tools import extract_medication_data, get_medication_into, save_csv
 
 medication_task = Task(
     name="medication",
@@ -9,18 +9,14 @@ medication_task = Task(
         """\
         Given a list of medications, save all medications for the patient as csv.
         To complete the task make the following steps:
-        1. extract the information from the document. extact the columns defined below that should be save later.
-        3. get the ATC code for a medication. Use the corrected name of the medication.
-        4. save the medication information as csv.
+        1. extract all information defined in the columns below from the document. Infer the medication_name_corrected column.
+        3. get the ATC code for all medications. Use the corrected name of the medications.
+        4. save the medication information as csv with the columns defined below.
 
-        save the the following columns:
+        Columns:
         - patient_id: The patient ID.
         - medication_name: The name of the medication in the document without dose, unit or additional information.
-        - medication_name_corrected: The corrected name of the medication.
-            * Correct the name of the medication if needed.
-            * Translate the name from german to englisch.
-            * Use the full and brand name.
-            * if possible add the main ingredient in parenthesis: e.g. "Aspirin (acetylsalicylic acid)".
+        - medication_name_corrected: Use the following format "Brand name or medication name (active ingredient)". e.g. "Aspirin (acetylsalicylic acid)".
         - dose: The dose of the medication. this sould only contain the numeric value.
         - unit: The unit of the dose (e.g. ml, mg, ...). if not applicable, write an empty string.
         - dosage_morning: The dose in the morning. if not applicable, write a 0.
@@ -33,5 +29,5 @@ medication_task = Task(
         - atc_type: The type of the ATC code. if not applicable, write an empty string.
         """
     ),
-    tools=[save_csv, get_medication_into, extract_data],
+    tools=[save_csv, get_medication_into, extract_medication_data],
 )

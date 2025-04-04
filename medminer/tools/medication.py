@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import httpx
 from smolagents import tool
 
@@ -37,80 +39,6 @@ def extract_medication_data(
 
 
 @tool
-def get_medication_into(
-    medication_names: list[str],
-) -> dict:
-    """
-    Get medication information for a given list of medication names.
-
-    Args:
-        medication_names: A list of corrected medication names.
-
-    Returns:
-        A dictionary containing the medication information (e.g. ATC Code).
-    """
-    data: dict[str, dict[str, str]] = {}
-
-    base_url = "https://rxnav.nlm.nih.gov/REST/"
-    with httpx.Client(base_url=base_url) as client:
-        for medication_name in medication_names:
-            params = {
-                "term": medication_name,
-            }
-            rxcui = next(
-                (
-                    cand["rxcui"]
-                    for cand in (
-                        client.get("approximateTerm.json", params=params)
-                        .json()
-                        .get("approximateGroup", {})
-                        .get("candidate", [])
-                    )
-                ),
-                None,
-            )
-
-            if not rxcui:
-                data[medication_name] = {}
-                continue
-
-            params = {
-                "rxcui": rxcui,
-            }
-            atc = next(
-                (
-                    cand
-                    for cand in (
-                        client.get("rxclass/class/byRxcui.json", params=params)
-                        .json()
-                        .get("rxclassDrugInfoList", {})
-                        .get("rxclassDrugInfo", [])
-                    )
-                    if "atc" in cand["relaSource"].lower()
-                ),
-                None,
-            )
-
-            if not atc:
-                data[medication_name] = {}
-                continue
-
-            concept = atc.get("rxclassMinConceptItem", {})
-
-            if not concept:
-                data[medication_name] = {}
-                continue
-
-            data[medication_name] = {
-                "atc_id": concept.get("classId"),
-                "atc_name": concept.get("className"),
-                "atc_type": concept.get("classType"),
-            }
-
-    return data
-
-
-@tool
 def get_rxcui(medication_names: list[str]) -> dict:
     """
     Get medication information for a given list of medication names.
@@ -119,9 +47,17 @@ def get_rxcui(medication_names: list[str]) -> dict:
         medication_names: A list of corrected medication names.
 
     Returns:
-        A dictionary containing the medication information (e.g. ATC Code).
+        A dictionary containing the medication information (e.g. rxcui and supporting sources).
+
+    Example:
+        >>> medication_names = ["Aspirin", "Paracetamol"]
+        >>> get_rxcui(medication_names)
+        {
+            "Aspirin": {"12345": ["RXNORM"]},
+            "Paracetamol": {"67890": ["RXNORM"]},
+        }
     """
-    data: dict[str, dict[str, str]] = {}
+    data: dict[str, dict] = {}
 
     base_url = "https://rxnav.nlm.nih.gov/REST/"
     with httpx.Client(base_url=base_url) as client:
@@ -129,21 +65,21 @@ def get_rxcui(medication_names: list[str]) -> dict:
             params = {
                 "term": medication_name,
             }
-            rxcuis = next(
-                (
-                    cand["rxcui"]
-                    for cand in (
-                        client.get("approximateTerm.json", params=params)
-                        .json()
-                        .get("approximateGroup", {})
-                        .get("candidate", [])
-                    )
-                ),
-            )
 
-            data[medication_name] = {
-                "rxcui": rxcuis,
-            }
+            rxcuis = defaultdict(list)
+
+            for cand in (
+                client.get("approximateTerm.json", params=params)
+                .json()
+                .get("approximateGroup", {})
+                .get("candidate", [])
+            ):
+                if cand["rank"] != "1":
+                    continue
+
+                rxcuis[cand["rxcui"]].append(cand["source"])
+
+            data[medication_name] = dict(rxcuis)
 
     return data
 

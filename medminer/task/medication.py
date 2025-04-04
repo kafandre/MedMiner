@@ -1,7 +1,7 @@
 from textwrap import dedent
 
 from medminer.task import Task
-from medminer.tools import extract_medication_data, get_medication_into, save_csv
+from medminer.tools import extract_medication_data, get_atc, get_rxcui, save_csv
 
 medication_task = Task(
     name="medication",
@@ -10,7 +10,8 @@ medication_task = Task(
         Given a list of medications, save all medications for the patient as csv.
         To complete the task make the following steps:
         1. extract all information defined in the columns below from the document. Infer the medication_name_corrected column.
-        3. get the ATC code for all medications. Use the corrected name of the medications.
+        2. get the RXCUI for all medications. Use the corrected name of the medications.
+        3. get the ATC code for all medications. Use the rxcui of the medications.
         4. save the medication information as csv with the columns defined below.
 
         Columns:
@@ -24,10 +25,11 @@ medication_task = Task(
         - dosage_evening: The dose in the evening. if not applicable, write a 0.
         - dosage_night: The dose in the night. if not applicable, write a 0.
         - dosage_information: Additional information about the dosage. if not applicable, write an empty string.
+        - rxcui: The RXCUI of the medication. if not applicable, write an empty string.
         - atc_id: The ATC code of the medication. if not applicable, write an empty string.
         - atc_name: The name of the ATC code. if not applicable, write an empty string.
         - atc_type: The type of the ATC code. if not applicable, write an empty string.
         """
     ),
-    tools=[save_csv, get_medication_into, extract_medication_data],
+    tools=[save_csv, extract_medication_data, get_rxcui, get_atc],
 )

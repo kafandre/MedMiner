@@ -61,6 +61,7 @@ def extract_diagnosis_data(
     """
     return data
 
+
 @tool
 def lookup_icd11(terms: list[str]) -> list[dict]:
     """

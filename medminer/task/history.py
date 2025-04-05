@@ -1,12 +1,13 @@
 from textwrap import dedent
 
 from medminer.task import Task
-from medminer.tools import extract_diagnosis_data, get_diagnosis_info, save_csv
+from medminer.tools.csv import save_csv
+from medminer.tools.diagnosis import extract_diagnosis_data, lookup_icd11
 
 history_task = Task(
     name="history",
     prompt=dedent(
-        """\
+        """
         Given a medical history of a patient, extract all given diagnoses and save all information as csv. The diagnosis should be translated to english. The medical history is usually in the format of a sentence or a paragraph. Every diagnosis should have a single row, if there are multiple diagnosis that can be extracted from a single piece of text, split them up. These are the steps you should follow to complete the task:
         1. extract a part of the text that contains a diagnosis. The diagnosis can be in any language. This is the diagnosis_reference column.
         2. translate the diagnoses to english if necessary and infer the diagnosis_translated column.
@@ -27,6 +28,8 @@ history_task = Task(
             {"patient_id": 3, "diagnosis_reference": "Lungenteilresektion rechts bei Lungenmetastasen eines Kolonkarzinoms", "diagnosis_translated": "Lung resection due to lung metastases of colon cancer", "diagnosis": "colon cancer", "month": "7", "year": "2023"},
             {"patient_id": 3, "diagnosis_reference": "Lungenteilresektion rechts bei Lungenmetastasen eines Kolonkarzinoms", "diagnosis_translated": "Lung resection due to lung metastases of colon cancer", "diagnosis": "lung metastasis", "month": "7", "year": "2023"}
         ]
+        
+        5. After you extracted the diagnosis, use the diagnosis string to look up the ICD-11 code for the diagnosis. If there are multiple codes, choose the candidate that you think fits the best to the translated diagnosis. Usually, the first candidate with a score of 1 is the best choice, but you can decide otherwise if you have reasonable grounds for another decision. If there are no codes, write an empty string.
 
         save the the following columns:
         - patient_id: The patient ID.
@@ -35,7 +38,8 @@ history_task = Task(
         - diagnosis: The extracted diagnosis.
         - month: The month of the medical history. if not applicable, write an empty string.
         - year: The year of the medical history. if not applicable, write an empty string.
+        - icd11_code: The ICD-11 code for the diagnosis. If there are no codes, write an empty string.
         """
     ),
-    tools=[save_csv, extract_diagnosis_data, get_diagnosis_info],
+    tools=[save_csv, extract_diagnosis_data, lookup_icd11],
 )

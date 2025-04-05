@@ -1,11 +1,7 @@
 import os
 
 import httpx
-from dotenv import load_dotenv
 from smolagents import tool
-
-# Load environment variables from .env file
-# load_dotenv()
 
 # --- ICD API Config ---
 TOKEN_URL = "https://icdaccessmanagement.who.int/connect/token"

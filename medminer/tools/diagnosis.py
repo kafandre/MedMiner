@@ -1,7 +1,11 @@
 import os
 
 import httpx
+from dotenv import load_dotenv
 from smolagents import tool
+
+# Load environment variables from .env file
+# load_dotenv()
 
 # --- ICD API Config ---
 TOKEN_URL = "https://icdaccessmanagement.who.int/connect/token"
@@ -84,15 +88,22 @@ def lookup_icd11(terms: list[str]) -> list[dict]:
         "Accept-Language": "en",
         "API-Version": "v2",
     }
-
+    print(f"CLIENT_ID: {CLIENT_ID}")
+    print(f"CLIENT_SECRET: {'<set>' if CLIENT_SECRET else '<missing>'}")
     with httpx.Client(verify=True) as client:
         results = []
         for term in terms:
-            params = {"query": term, "useFlexisearch": "true"}
+            params = {"q": term, "useFlexisearch": "true"}
 
             response = client.get(
                 ICD_SEARCH_URL, headers=headers, params=params)
-            response.raise_for_status()
+            try:
+                response.raise_for_status()
+            except httpx.HTTPStatusError as e:
+                print("💥 Token request failed:")
+                print("Status:", e.response.status_code)
+                print("Response:", e.response.text)
+                raise
             data = response.json()
             candidates = [
                 {

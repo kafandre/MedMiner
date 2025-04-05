@@ -71,7 +71,7 @@ def lookup_icd11(terms: list[str]) -> list[dict]:
         terms: A list of terms to search for in the ICD-11 database.
 
     Returns:
-        A list of dictionaries containing the ICD-11 codes and their descriptions.
+        A list of dictionaries containing the ICD-11 codes and their title and scores.
 
     Example:
         >>> terms = ["Myocardial Infarction", "colon cancer"]

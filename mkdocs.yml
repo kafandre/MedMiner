@@ -1,5 +1,5 @@
 site_name: project_name
-docs_dir: docs/docs
+docs_dir: docs
 nav:
 - Getting Started:
   - Package Overview: 'getting_started/overview.md'

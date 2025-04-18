@@ -1,5 +1,11 @@
 import gradio as gr
 
+from medminer.ui.api import (
+    process_files,
+    process_sql,
+    process_text,
+)
+
 with gr.Blocks(
     title="MedMiner",
 ) as demo:
@@ -12,12 +18,15 @@ with gr.Blocks(
     with gr.Row():
         with gr.Column(scale=1):
             input_text = gr.Markdown("## Input")
+            tasks_input = gr.CheckboxGroup(
+                label="Task",
+                info="Select the task you want to perform.",
+                choices=["Medication", "Diagnosis", "Procedure", "Medical history"],
+            )
 
             with gr.Tab("Files"):
                 files_tab_text = gr.Markdown("Upload a file to extract information from it.")
-                files_input = gr.File(
-                    label="Upload a files", file_types=[".txt", ".csv", ".json"], file_count="multiple"
-                )
+                files_input = gr.Files(label="Upload a files", file_types=[".txt", ".csv"], file_count="multiple")
                 process_files_btn = gr.Button("Process Files")
 
             with gr.Tab("SQL"):
@@ -27,11 +36,17 @@ with gr.Blocks(
 
             with gr.Tab("Text"):
                 text_tab_text = gr.Markdown("Enter a text to extract information from it.")
-                text_input = gr.Textbox(label="Text", placeholder="Enter text here", lines=5)
+                text_input = gr.Textbox(label="Text", placeholder="Enter text here", lines=25)
                 process_text_btn = gr.Button("Process Text")
 
         with gr.Column(scale=1):
             output_text = gr.Markdown("## Output")
+
+            output_data = gr.Dataframe()
+
+        process_files_btn.click(process_files, inputs=[files_input, tasks_input], outputs=[output_data])
+        process_sql_btn.click(process_sql, inputs=[sql_input, tasks_input], outputs=[output_data])
+        process_text_btn.click(process_text, inputs=[text_input, tasks_input], outputs=[output_data])
 
 
 demo.launch()

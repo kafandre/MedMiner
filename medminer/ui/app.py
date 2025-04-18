@@ -1,10 +1,6 @@
 import gradio as gr
 
-from medminer.ui.api import (
-    process_files,
-    process_sql,
-    process_text,
-)
+from medminer.ui.api import TaskType, process_files, process_sql, process_text
 
 with gr.Blocks(
     title="MedMiner",
@@ -21,7 +17,7 @@ with gr.Blocks(
             tasks_input = gr.CheckboxGroup(
                 label="Task",
                 info="Select the task you want to perform.",
-                choices=["Medication", "Diagnosis", "Procedure", "Medical history"],
+                choices=TaskType.list(),
             )
 
             with gr.Tab("Files"):

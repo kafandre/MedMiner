@@ -1,4 +1,22 @@
+import os
+from enum import StrEnum
+from pathlib import Path
+
 import pandas as pd
+from smolagents import AzureOpenAIServerModel
+
+from medminer.task import diagnose_task, history_task, medication_task
+
+
+class TaskType(StrEnum):
+    MEDICATION = "Medication"
+    DIAGNOSIS = "Diagnosis"
+    PROCEDURE = "Procedure"
+    MEDICAL_HISTORY = "Medical history"
+
+    @staticmethod
+    def list() -> list[str]:
+        return list(map(lambda t: t.value, TaskType))  # type: ignore[attr-defined]
 
 
 def process_docs(docs: list[str], tasks: list[str]) -> pd.DataFrame:
@@ -17,11 +35,40 @@ def process_docs(docs: list[str], tasks: list[str]) -> pd.DataFrame:
     list[str]
         List of processed documents.
     """
-    results = []
-    for doc in docs:
-        results.append(doc)
 
-    return pd.DataFrame(data={"text": docs})
+    def _get_task(task_name: str):  # type: ignore[no-untyped-def]
+        match task_name:
+            case TaskType.MEDICATION:
+                return medication_task
+            case TaskType.DIAGNOSIS:
+                return diagnose_task
+            case TaskType.MEDICAL_HISTORY:
+                return history_task
+            case _:
+                raise ValueError(f"Unknown task: {task_name}")
+
+    task_name = tasks[0]  # todo add suport for multiple tasks
+    task = _get_task(task_name)
+
+    model = AzureOpenAIServerModel(
+        model_id=os.environ.get("AZURE_OPENAI_MODEL", ""),
+        azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT", ""),
+        api_key=os.environ.get("AZURE_OPENAI_API_KEY", ""),
+        api_version=os.environ.get("OPENAI_API_VERSION", ""),
+    )
+
+    for doc in docs:
+        task.run(model, doc)
+
+    match task_name:
+        case TaskType.MEDICATION:
+            return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "medication.csv")
+        case TaskType.DIAGNOSIS:
+            return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "diagnose.csv")
+        case TaskType.MEDICAL_HISTORY:
+            return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "history.csv")
+        case _:
+            raise ValueError(f"Unknown task: {task_name}")
 
 
 def process_files(files: list | None, tasks: list[str]) -> pd.DataFrame:
@@ -47,6 +94,7 @@ def process_files(files: list | None, tasks: list[str]) -> pd.DataFrame:
 
     for file_name in files:
         with open(file_name, "r") as file:
+            # Add destinction between csv and txt files
             docs.append(file.read())
 
     return process_docs(docs, tasks)

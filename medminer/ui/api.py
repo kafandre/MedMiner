@@ -5,12 +5,11 @@ from pathlib import Path
 import pandas as pd
 from smolagents import AzureOpenAIServerModel
 
-from medminer.task import diagnose_task, history_task, medication_task
+from medminer.task import history_task, medication_task, procedure_task
 
 
 class TaskType(StrEnum):
     MEDICATION = "Medication"
-    DIAGNOSIS = "Diagnosis"
     PROCEDURE = "Procedure"
     MEDICAL_HISTORY = "Medical history"
 
@@ -40,8 +39,8 @@ def process_docs(docs: list[str], tasks: list[str]) -> pd.DataFrame:
         match task_name:
             case TaskType.MEDICATION:
                 return medication_task
-            case TaskType.DIAGNOSIS:
-                return diagnose_task
+            case TaskType.PROCEDURE:
+                return procedure_task
             case TaskType.MEDICAL_HISTORY:
                 return history_task
             case _:
@@ -63,8 +62,8 @@ def process_docs(docs: list[str], tasks: list[str]) -> pd.DataFrame:
     match task_name:
         case TaskType.MEDICATION:
             return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "medication.csv")
-        case TaskType.DIAGNOSIS:
-            return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "diagnose.csv")
+        case TaskType.PROCEDURE:
+            return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "procedure.csv")
         case TaskType.MEDICAL_HISTORY:
             return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "history.csv")
         case _:

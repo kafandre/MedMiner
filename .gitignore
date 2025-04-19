@@ -1,5 +1,5 @@
-result/*
-
+validation/data/*.csv
+validation/data/*.xlsx
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

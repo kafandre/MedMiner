@@ -48,28 +48,3 @@ def save_csv(
             writer.writerow(row)
 
     return f"Saved data for task {task_name} to {file_path}"
-
-
-@tool
-def extract_data(
-    data: list[dict],
-) -> list[dict]:
-    """
-    Adds extracted data to the task memory.
-
-    Args:
-        data: A list of dictionaries containing the data to save.
-            All dictionaries must have the same keys.
-
-    Returns:
-        A message indicating where the data was saved.
-
-    Example:
-        >>> data = [
-        ...     {"patient_id": 1, "medication_name": "Aspirin"},
-        ...     {"patient_id": 2, "medication_name": "Paracetamol"},
-        ... ]
-        >>> save_csv("medication", data)
-        "Saved data for task medication to /path/to/result/medication.csv"
-    """
-    return data

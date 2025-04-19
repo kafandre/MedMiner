@@ -1,8 +1,7 @@
 from textwrap import dedent
 
 from medminer.task import Task
-from medminer.tools import (extract_medication_data, get_atc, get_rxcui,
-                            save_csv)
+from medminer.tools import extract_medication_data, get_atc, get_rxcui, save_csv
 
 medication_task = Task(
     name="medication",

@@ -1,4 +1,5 @@
 import os
+import time
 
 import httpx
 from smolagents import tool
@@ -13,10 +14,20 @@ SCOPE = "icdapi_access"
 GRANT_TYPE = "client_credentials"
 
 
+_token_cache = {"token": None, "expires_at": 0}
+
+
 def get_token() -> str:
     """
     Authenticate with the WHO ICD API and return an access token.
+    Caches the token for the period it is valid to reduce roundtrip time.
     """
+    global _token_cache
+
+    # Check if the cached token is still valid
+    if _token_cache["token"] and time.time() < _token_cache["expires_at"]:
+        return _token_cache["token"]
+
     payload = {
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET,
@@ -27,7 +38,14 @@ def get_token() -> str:
     with httpx.Client(verify=True) as client:
         response = client.post(TOKEN_URL, data=payload)
         response.raise_for_status()
-        token = response.json().get("access_token")
+        response_data = response.json()
+        token = response_data.get("access_token")
+        expires_in = response_data.get("expires_in", 3600)  # Default to 1 hour if not provided
+
+        # Cache the token and its expiry time
+        _token_cache["token"] = token
+        _token_cache["expires_at"] = time.time() + expires_in
+
         return token
 
 

@@ -102,8 +102,6 @@ def lookup_icd11(terms: list[str]) -> list[dict]:
         "Accept-Language": "en",
         "API-Version": "v2",
     }
-    print(f"CLIENT_ID: {CLIENT_ID}")
-    print(f"CLIENT_SECRET: {'<set>' if CLIENT_SECRET else '<missing>'}")
     with httpx.Client(verify=True) as client:
         results = []
         for term in terms:

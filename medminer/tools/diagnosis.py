@@ -25,8 +25,8 @@ def get_token() -> str:
     global _token_cache
 
     # Check if the cached token is still valid
-    if _token_cache["token"] and time.time() < _token_cache["expires_at"]:
-        return _token_cache["token"]
+    if _token_cache["token"] and time.time() < _token_cache["expires_at"]:  # type: ignore[operator]
+        return _token_cache["token"]  # type: ignore[return-value]
 
     payload = {
         "client_id": CLIENT_ID,
@@ -46,7 +46,7 @@ def get_token() -> str:
         _token_cache["token"] = token
         _token_cache["expires_at"] = time.time() + expires_in
 
-        return token
+        return token  # type: ignore[no-any-return]
 
 
 @tool
@@ -107,8 +107,7 @@ def lookup_icd11(terms: list[str]) -> list[dict]:
         for term in terms:
             params = {"q": term, "useFlexisearch": "true"}
 
-            response = client.get(
-                ICD_SEARCH_URL, headers=headers, params=params)
+            response = client.get(ICD_SEARCH_URL, headers=headers, params=params)
             try:
                 response.raise_for_status()
             except httpx.HTTPStatusError as e:
@@ -122,16 +121,19 @@ def lookup_icd11(terms: list[str]) -> list[dict]:
                     "code": candidate.get("theCode"),
                     "score": candidate.get("score"),
                     "title": candidate.get("title"),
-                } for candidate in data.get("destinationEntities", [])
+                }
+                for candidate in data.get("destinationEntities", [])
             ]
             # filter for score  > 0.3 # TODO: maybe make this a parameter
             candidates = [c for c in candidates if c["score"] > 0.3]
             # sort by score descending
             candidates.sort(key=lambda x: x["score"], reverse=True)
 
-            results.append({
-                "term": term,
-                "candidates": candidates,
-            })
+            results.append(
+                {
+                    "term": term,
+                    "candidates": candidates,
+                }
+            )
 
     return results

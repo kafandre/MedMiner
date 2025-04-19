@@ -13,23 +13,27 @@ history_task = Task(
         2. translate the diagnoses to english if necessary and infer the diagnosis_translated column.
         3. Extract the relevant diagnosis as a string and loose everything that is not relevant. This is the diagnosis column.
         4. Extract the month and year of the medical history for that diagnosis. If not applicable, write an empty string.
-
-        Example 1:
-        Input: "schwere Herzinsuffizienz, 2. Grad, NYHA II, ED 07/2023"
-        Output: [{"patient_id": 1, "diagnosis_reference": "schwere chronische Herzinsuffizienz, 2. Grad, NYHA II", "diagnosis_translated": "severe chronic heart failure, 2nd degree, NYHA II", "diagnosis": "chronic heart failure", "month": "7", "year": "2023"}]
-
-        Example 2:
-        Input: "Myocardial Infarction"
-        Output: [{"patient_id": 2, "diagnosis_reference": "Myocardial Infarction", "diagnosis_translated": "Myocardial Infarction", "diagnosis": "Myocardial Infarction", "month": "", "year": ""}]        
-
-        Example 3:
-        Input: "Lungenteilresektion rechts bei Lungenmetastasen eines Kolonkarzinoms, 2023-07-01"
-        Output: [
-            {"patient_id": 3, "diagnosis_reference": "Lungenteilresektion rechts bei Lungenmetastasen eines Kolonkarzinoms", "diagnosis_translated": "Lung resection due to lung metastases of colon cancer", "diagnosis": "colon cancer", "month": "7", "year": "2023"},
-            {"patient_id": 3, "diagnosis_reference": "Lungenteilresektion rechts bei Lungenmetastasen eines Kolonkarzinoms", "diagnosis_translated": "Lung resection due to lung metastases of colon cancer", "diagnosis": "lung metastasis", "month": "7", "year": "2023"}
-        ]
-        
         5. After you extracted the diagnosis, use the diagnosis string to look up the ICD-11 code for the diagnosis. If there are multiple codes, choose the candidate that you think fits the best to the translated diagnosis. Usually, the first candidate with a score of 1 is the best choice, but you can decide otherwise if you have reasonable grounds for another decision. If there are no codes, write an empty string.
+
+
+            Example 1:
+            Input: "schwere Herzinsuffizienz, 2. Grad, NYHA II, ED 07/2023"
+            Output: [
+                {"patient_id": 1, "diagnosis_reference": "schwere chronische Herzinsuffizienz, 2. Grad, NYHA II", "diagnosis_translated": "severe chronic heart failure, 2nd degree, NYHA II", "diagnosis": "chronic heart failure", "month": "7", "year": "2023"}
+            ]
+
+            Example 2:
+            Input: "Myocardial Infarction"
+            Output: [
+                {"patient_id": 2, "diagnosis_reference": "Myocardial Infarction", "diagnosis_translated": "Myocardial Infarction", "diagnosis": "Myocardial Infarction", "month": "", "year": ""}
+                ]
+
+            Example 3:
+            Input: "Lungenteilresektion rechts bei Lungenmetastasen eines Kolonkarzinoms, 2023-07-01"
+            Output: [
+                {"patient_id": 3, "diagnosis_reference": "Lungenteilresektion rechts bei Lungenmetastasen eines Kolonkarzinoms", "diagnosis_translated": "Lung resection due to lung metastases of colon cancer", "diagnosis": "colon cancer", "month": "7", "year": "2023"},
+                {"patient_id": 3, "diagnosis_reference": "Lungenteilresektion rechts bei Lungenmetastasen eines Kolonkarzinoms", "diagnosis_translated": "Lung resection due to lung metastases of colon cancer", "diagnosis": "lung metastasis", "month": "7", "year": "2023"}
+            ]
 
         save the the following columns:
         - patient_id: The patient ID.

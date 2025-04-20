@@ -1,21 +1,7 @@
 import gradio as gr
 
 from medminer.ui.api import TaskType, process_files, process_sql, process_text
-
-try:
-    from smolagents import TransformersModel
-
-    impoted_hf_transformer = True
-except ImportError:
-    impoted_hf_transformer = False
-
-try:
-    from smolagents import AzureOpenAIServerModel
-
-    imported_azure_openai = True
-except ImportError:
-    imported_azure_openai = False
-
+from medminer.utils.models import imported_azure_openai, impoted_hf_transformer
 
 with gr.Blocks(
     title="MedMiner",

@@ -29,17 +29,22 @@ class DefaultModel:
     def __init__(self, **kwargs: str) -> None:
         self._model = None
 
-        if imported_azure_openai:
-            self._model = AzureOpenAIServerModel(
-                model_id=kwargs.get("model_id", "") or os.getenv("AZURE_OPENAI_MODEL", ""),
-                azure_endpoint=kwargs.get("azure_endpoint", "") or os.getenv("AZURE_OPENAI_ENDPOINT", ""),
-                api_key=kwargs.get("api_key", "") or os.getenv("AZURE_OPENAI_API_KEY", ""),
-                api_version=kwargs.get("api_version", "") or os.getenv("OPENAI_API_VERSION", ""),
-            )
-
-        if impoted_hf_transformer:
+        if impoted_hf_transformer and (model_id := kwargs.get("model_id", "") or os.getenv("HF_MODEL", "")):
             self._model = TransformersModel(
-                model_id=kwargs.get("model_id", "") or os.getenv("HF_MODEL", ""),
+                model_id=model_id,
+            )
+        elif (
+            imported_azure_openai
+            and (model_id := kwargs.get("model_id", "") or os.getenv("AZURE_OPENAI_MODEL", ""))
+            and (azure_endpoint := kwargs.get("azure_endpoint", "") or os.getenv("AZURE_OPENAI_ENDPOINT", ""))
+            and (api_key := kwargs.get("api_key", "") or os.getenv("AZURE_OPENAI_API_KEY", ""))
+            and (api_version := kwargs.get("api_version", "") or os.getenv("OPENAI_API_VERSION", ""))
+        ):
+            self._model = AzureOpenAIServerModel(
+                model_id=model_id,
+                azure_endpoint=azure_endpoint,
+                api_key=api_key,
+                api_version=api_version,
             )
 
     @property

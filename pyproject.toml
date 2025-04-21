@@ -64,7 +64,7 @@ disallow_untyped_defs = true
 strict_optional = true
 
 [[tool.mypy.overrides]]
-module = ["smolagents.*"]
+module = ["smolagents.*", "transformers.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

@@ -1,7 +1,7 @@
 import gradio as gr
 
 from medminer.ui.api import TaskType, process_files, process_sql, process_text
-from medminer.utils.models import imported_azure_openai, impoted_hf_transformer
+from medminer.ui.settings import MODEL_TABS
 
 with gr.Blocks(
     title="MedMiner",
@@ -15,19 +15,33 @@ with gr.Blocks(
     with gr.Row():
         with gr.Column(scale=1):
             gr.Markdown("## Model")
-            with gr.Tabs() as model_tabs:
-                if impoted_hf_transformer:
-                    with gr.Tab("HF Transformer", id="hf_transformer"):
-                        gr.Markdown("Enter a Model name of a HuggingFace transformer.")
-                        hf_model = gr.Textbox(label="Model name", placeholder="Qwen/Qwen2.5-Coder-32B-Instruct")
+            model_settings = gr.State({})
 
-                if imported_azure_openai:
-                    with gr.Tab("Azure OpenAI", id="azure_openai"):
-                        gr.Markdown("Enter the model name, endpoint, and API key.")
-                        hf_model = gr.Textbox(label="Model name", placeholder="")
-                        hf_endpoint = gr.Textbox(label="Endpoint", placeholder="")
-                        hf_version = gr.Textbox(label="API Version", placeholder="")
-                        hf_key = gr.Textbox(label="API Key", placeholder="", type="password")
+            def set_setting(settings: dict, name: str, param: str) -> dict:
+                if not name:
+                    return settings
+
+                if param:
+                    settings[name] = param
+                elif name in settings and settings[name]:
+                    del settings[name]
+
+                return settings
+
+            @gr.render()
+            def model_tabs() -> None:
+                with gr.Tabs():
+                    for tab in MODEL_TABS:
+                        with gr.Tab(tab.get("name", ""), id=tab.get("id", "")):
+                            if desc := tab.get("description"):
+                                gr.Markdown(desc)
+                            for field in tab.get("fields", []):
+                                _field = gr.Textbox(**field.get("params", {}))  # type: ignore[attr-defined]
+                                _field.input(
+                                    set_setting,
+                                    inputs=[model_settings, gr.Textbox(value=field.get("id"), visible=False), _field],  # type: ignore[attr-defined]
+                                    outputs=model_settings,
+                                )
 
             gr.Markdown("## Task")
             tasks_input = gr.CheckboxGroup(
@@ -57,7 +71,7 @@ with gr.Blocks(
 
                 with gr.Tab("Text"):
                     gr.Markdown("Enter a text to extract information from it.")
-                    text_input = gr.Textbox(label="Text", placeholder="Enter text here", lines=25)
+                    text_input = gr.Textbox(label="Text", placeholder="Enter text here", lines=20)
                     process_text_btn = gr.Button("Process Text")
 
         with gr.Column(scale=1):

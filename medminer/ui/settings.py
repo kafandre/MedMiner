@@ -1,4 +1,19 @@
-MODEL_TABS = [
+from typing import Any, TypedDict
+
+
+class ModelTabFieldConfig(TypedDict):
+    params: dict[str, Any]
+    id: str
+
+
+class ModelTabConfig(TypedDict):
+    name: str
+    id: str
+    description: str
+    fields: list[ModelTabFieldConfig]
+
+
+MODEL_TABS: list[ModelTabConfig] = [
     {
         "name": "HF Transformer",
         "id": "hf_transformer",

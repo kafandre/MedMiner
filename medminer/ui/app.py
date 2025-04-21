@@ -36,10 +36,10 @@ with gr.Blocks(
                             if desc := tab.get("description"):
                                 gr.Markdown(desc)
                             for field in tab.get("fields", []):
-                                _field = gr.Textbox(**field.get("params", {}))  # type: ignore[attr-defined]
+                                _field = gr.Textbox(**field.get("params", {}))
                                 _field.input(
                                     set_setting,
-                                    inputs=[model_settings, gr.Textbox(value=field.get("id"), visible=False), _field],  # type: ignore[attr-defined]
+                                    inputs=[model_settings, gr.Textbox(value=field.get("id"), visible=False), _field],
                                     outputs=model_settings,
                                 )
 

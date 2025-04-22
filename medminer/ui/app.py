@@ -31,6 +31,7 @@ with gr.Blocks(
     )
     with gr.Row():
         with gr.Column(scale=1):
+            gr.Markdown("## Settings")
             with gr.Accordion("Model settings"):
 
                 @gr.render()

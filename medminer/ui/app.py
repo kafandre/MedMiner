@@ -1,8 +1,14 @@
 from typing import Any
 
 import gradio as gr
+import pandas as pd
 
-from medminer.ui.api import process_files, process_sql, process_text
+from medminer.ui.api import (
+    process_csv_file,
+    process_sql,
+    process_text,
+    process_txt_files,
+)
 from medminer.ui.settings import MODEL_TABS, TASK_SETTINGS
 
 with gr.Blocks(
@@ -11,6 +17,7 @@ with gr.Blocks(
     model_settings = gr.State({})
     task_settings = gr.State({})
     tasks_state = gr.State([])
+    data_state = gr.State({})
 
     def set_state(state: dict, name: str, param: Any) -> dict:
         if not name:
@@ -88,15 +95,16 @@ with gr.Blocks(
                             outputs=task_settings,
                         )
 
-            gr.Markdown("## Data")
+            gr.Markdown("## Input data")
             with gr.Tabs() as data_tabs:
-                with gr.Tab(".txt Files"):
-                    gr.Markdown("Upload a file to extract information from it.")
+                with gr.Tab("TXTs"):
+                    gr.Markdown("Upload .txt files to extract information from it.")
                     txt_files_input = gr.Files(label="Upload a files", file_types=[".txt"], file_count="multiple")
                     process_txt_files_btn = gr.Button("Process Files")
 
                 with gr.Tab("CSV"):
-                    gr.Markdown("Upload a file to extract information from it.")
+                    gr.Markdown("Upload a .csv file to extract information from it.")
+                    csv_column_input = gr.Textbox(label="Column name", placeholder="document")
                     csv_file_input = gr.Files(
                         label="Upload a files",
                         file_types=[".csv"],
@@ -114,14 +122,30 @@ with gr.Blocks(
                     process_text_btn = gr.Button("Process Text")
 
         with gr.Column(scale=1):
-            output_text = gr.Markdown("## Output")
+            output_text = gr.Markdown("## Output data")
 
-            output_data = gr.Dataframe()
+            @gr.render(inputs=data_state)
+            def draw_task_data(data: dict[str, pd.DataFrame]) -> None:
+                for name, df in data.items():
+                    with gr.Accordion(name, open=False):
+                        gr.Dataframe(df)
 
-        process_txt_files_btn.click(process_files, inputs=[txt_files_input, tasks_input], outputs=[output_data])
-        process_csv_file_btn.click(process_files, inputs=[csv_file_input, tasks_input], outputs=[output_data])
-        process_sql_btn.click(process_sql, inputs=[sql_input, tasks_input], outputs=[output_data])
-        process_text_btn.click(process_text, inputs=[text_input, tasks_input], outputs=[output_data])
+        process_txt_files_btn.click(
+            process_txt_files,
+            inputs=[txt_files_input, model_settings, task_settings, tasks_state],
+            outputs=[data_state],
+        )
+        process_csv_file_btn.click(
+            process_csv_file,
+            inputs=[csv_file_input, csv_column_input, model_settings, task_settings, tasks_state],
+            outputs=[data_state],
+        )
+        process_sql_btn.click(
+            process_sql, inputs=[sql_input, model_settings, task_settings, tasks_state], outputs=[data_state]
+        )
+        process_text_btn.click(
+            process_text, inputs=[text_input, model_settings, task_settings, tasks_state], outputs=[data_state]
+        )
 
 
 demo.launch()

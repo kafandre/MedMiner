@@ -1,76 +1,9 @@
-import os
-from enum import StrEnum
-from pathlib import Path
-
 import pandas as pd
-from smolagents import AzureOpenAIServerModel
-
-from medminer.task import history_task, medication_task, procedure_task
 
 
-class TaskType(StrEnum):
-    MEDICATION = "Medication"
-    PROCEDURE = "Procedure"
-    MEDICAL_HISTORY = "Medical history"
-
-    @staticmethod
-    def list() -> list[str]:
-        return list(map(lambda t: t.value, TaskType))  # type: ignore[attr-defined]
-
-
-def process_docs(docs: list[str], tasks: list[str]) -> pd.DataFrame:
-    """
-    Process a list of documents with the specified tasks.
-
-    Parameters
-    ----------
-    docs : list[str]
-        List of documents to process.
-    tasks : list[str]
-        List of tasks to perform on the documents.
-
-    Returns
-    -------
-    list[str]
-        List of processed documents.
-    """
-
-    def _get_task(task_name: str):  # type: ignore[no-untyped-def]
-        match task_name:
-            case TaskType.MEDICATION:
-                return medication_task
-            case TaskType.PROCEDURE:
-                return procedure_task
-            case TaskType.MEDICAL_HISTORY:
-                return history_task
-            case _:
-                raise ValueError(f"Unknown task: {task_name}")
-
-    task_name = tasks[0]  # todo add suport for multiple tasks
-    task = _get_task(task_name)
-
-    model = AzureOpenAIServerModel(
-        model_id=os.environ.get("AZURE_OPENAI_MODEL", ""),
-        azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT", ""),
-        api_key=os.environ.get("AZURE_OPENAI_API_KEY", ""),
-        api_version=os.environ.get("OPENAI_API_VERSION", ""),
-    )
-
-    for doc in docs:
-        task.run(model, doc)
-
-    match task_name:
-        case TaskType.MEDICATION:
-            return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "medication.csv")
-        case TaskType.PROCEDURE:
-            return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "procedure.csv")
-        case TaskType.MEDICAL_HISTORY:
-            return pd.read_csv(Path(__file__).parent.parent.parent / "result" / "history.csv")
-        case _:
-            raise ValueError(f"Unknown task: {task_name}")
-
-
-def process_files(files: list | None, tasks: list[str]) -> pd.DataFrame:
+def process_txt_files(
+    files: list | None, model_settings: dict[str, str], task_settings: dict[str, str], tasks: list[str]
+) -> dict[str, pd.DataFrame]:
     """
     Process a list of files with the specified tasks.
 
@@ -78,28 +11,61 @@ def process_files(files: list | None, tasks: list[str]) -> pd.DataFrame:
     ----------
     files : list
         List of file paths to process.
+    model_settings : dict[str, str]
+        Model settings for the processing.
+    task_settings : dict[str, str]
+        Task settings for the processing.
     tasks : list[str]
         List of tasks to perform on the files.
 
     Returns
     -------
-    pd.DataFrame
-        DataFrame containing the processed text.
+    dict[str, pd.DataFrame]
+        Dictionary containing the processed data.
     """
     if files is None or not tasks:
-        return pd.DataFrame()
+        return {}
 
-    docs = []
-
-    for file_name in files:
-        with open(file_name, "r") as file:
-            # Add destinction between csv and txt files
-            docs.append(file.read())
-
-    return process_docs(docs, tasks)
+    return {}
 
 
-def process_sql(sql: str, tasks: list[str]) -> pd.DataFrame:
+def process_csv_file(
+    file: str | None,
+    column: str | None,
+    model_settings: dict[str, str],
+    task_settings: dict[str, str],
+    tasks: list[str],
+) -> dict[str, pd.DataFrame]:
+    """
+    Process a CSV file with the specified tasks.
+
+    Parameters
+    ----------
+    file : str | None
+        Path to the CSV file to process.
+    column : str | None
+        Name of the column to process.
+    model_settings : dict[str, str]
+        Model settings for the processing.
+    task_settings : dict[str, str]
+        Task settings for the processing.
+    tasks : list[str]
+        List of tasks to perform on the files.
+
+    Returns
+    -------
+    dict[str, pd.DataFrame]
+        Dictionary containing the processed data.
+    """
+    if file is None or not column or not tasks:
+        return {}
+
+    return {}
+
+
+def process_sql(
+    sql: str, model_settings: dict[str, str], task_settings: dict[str, str], tasks: list[str]
+) -> dict[str, pd.DataFrame]:
     """
     Process a SQL query with the specified tasks.
 
@@ -107,13 +73,27 @@ def process_sql(sql: str, tasks: list[str]) -> pd.DataFrame:
     ----------
     sql : str
         SQL query to process.
+    model_settings : dict[str, str]
+        Model settings for the processing.
+    task_settings : dict[str, str]
+        Task settings for the processing.
     tasks : list[str]
-        List of tasks to perform on the SQL query.
+        List of tasks to perform on the files.
+
+    Returns
+    -------
+    dict[str, pd.DataFrame]
+        Dictionary containing the processed data.
     """
-    return pd.DataFrame()
+    if not sql or not tasks:
+        return {}
+
+    return {}
 
 
-def process_text(text: str, tasks: list[str]) -> pd.DataFrame:
+def process_text(
+    text: str, model_settings: dict[str, str], task_settings: dict[str, str], tasks: list[str]
+) -> dict[str, pd.DataFrame]:
     """
     Process a text with the specified tasks.
 
@@ -121,12 +101,19 @@ def process_text(text: str, tasks: list[str]) -> pd.DataFrame:
     ----------
     text : str
         Text to process.
+    model_settings : dict[str, str]
+        Model settings for the processing.
+    task_settings : dict[str, str]
+        Task settings for the processing.
     tasks : list[str]
-        List of tasks to perform on the text.
+        List of tasks to perform on the files.
 
     Returns
     -------
-    pd.DataFrame
-        DataFrame containing the processed text.
+    dict[str, pd.DataFrame]
+        Dictionary containing the processed data.
     """
-    return process_docs([text], tasks)
+    if not text or not tasks:
+        return {}
+
+    return {}

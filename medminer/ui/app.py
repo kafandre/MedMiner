@@ -32,6 +32,9 @@ with gr.Blocks(
             def model_tabs() -> None:
                 with gr.Tabs():
                     for tab in MODEL_TABS:
+                        if not tab.get("available", False):
+                            continue
+
                         with gr.Tab(tab.get("name", ""), id=tab.get("id", "")):
                             if desc := tab.get("description"):
                                 gr.Markdown(desc)

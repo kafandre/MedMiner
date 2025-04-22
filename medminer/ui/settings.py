@@ -30,7 +30,7 @@ MODEL_TABS: list[ModelTabConfig] = [
         "name": "Azure OpenAI",
         "id": "azure_openai",
         "available": imported_azure_openai,
-        "description": "Enter the model name, endpoint, and API key.",
+        "description": "Enter the model name, endpoint, and API version and key.",
         "fields": [
             {"params": {"label": "Model name", "placeholder": "gpt-4.1"}, "id": "oai_model_id"},
             {

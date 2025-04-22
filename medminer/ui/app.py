@@ -29,25 +29,29 @@ with gr.Blocks(
     )
     with gr.Row():
         with gr.Column(scale=1):
-            gr.Markdown("## Model")
+            with gr.Accordion("Model settings"):
 
-            @gr.render()
-            def model_tabs() -> None:
-                with gr.Tabs():
-                    for tab in MODEL_TABS:
-                        if not tab.get("available", False):
-                            continue
+                @gr.render()
+                def model_tabs() -> None:
+                    with gr.Tabs():
+                        for tab in MODEL_TABS:
+                            if not tab.get("available", False):
+                                continue
 
-                        with gr.Tab(tab.get("name", ""), id=tab.get("id", "")):
-                            if desc := tab.get("description"):
-                                gr.Markdown(desc)
-                            for field in tab.get("fields", []):
-                                _field = gr.Textbox(**field.get("params", {}))
-                                _field.input(
-                                    set_state,
-                                    inputs=[model_settings, gr.Textbox(value=field.get("id"), visible=False), _field],
-                                    outputs=model_settings,
-                                )
+                            with gr.Tab(tab.get("name", ""), id=tab.get("id", "")):
+                                if desc := tab.get("description"):
+                                    gr.Markdown(desc)
+                                for field in tab.get("fields", []):
+                                    _field = gr.Textbox(**field.get("params", {}))
+                                    _field.input(
+                                        set_state,
+                                        inputs=[
+                                            model_settings,
+                                            gr.Textbox(value=field.get("id"), visible=False),
+                                            _field,
+                                        ],
+                                        outputs=model_settings,
+                                    )
 
             gr.Markdown("## Task")
             tasks_input = gr.CheckboxGroup(

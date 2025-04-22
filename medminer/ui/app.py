@@ -1,3 +1,5 @@
+from typing import Any
+
 import gradio as gr
 
 from medminer.ui.api import TaskType, process_files, process_sql, process_text
@@ -6,6 +8,19 @@ from medminer.ui.settings import MODEL_TABS
 with gr.Blocks(
     title="MedMiner",
 ) as demo:
+    model_settings = gr.State({})
+
+    def set_state(state: dict, name: str, param: Any) -> dict:
+        if not name:
+            return state
+
+        if param:
+            state[name] = param
+        elif name in state and state[name]:
+            del state[name]
+
+        return state
+
     title = gr.Markdown(
         """
         # MedMiner
@@ -15,18 +30,6 @@ with gr.Blocks(
     with gr.Row():
         with gr.Column(scale=1):
             gr.Markdown("## Model")
-            model_settings = gr.State({})
-
-            def set_setting(settings: dict, name: str, param: str) -> dict:
-                if not name:
-                    return settings
-
-                if param:
-                    settings[name] = param
-                elif name in settings and settings[name]:
-                    del settings[name]
-
-                return settings
 
             @gr.render()
             def model_tabs() -> None:
@@ -41,7 +44,7 @@ with gr.Blocks(
                             for field in tab.get("fields", []):
                                 _field = gr.Textbox(**field.get("params", {}))
                                 _field.input(
-                                    set_setting,
+                                    set_state,
                                     inputs=[model_settings, gr.Textbox(value=field.get("id"), visible=False), _field],
                                     outputs=model_settings,
                                 )

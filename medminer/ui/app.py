@@ -130,6 +130,9 @@ with gr.Blocks(
                     with gr.Accordion(name, open=False):
                         gr.Dataframe(df)
 
+                if not data:
+                    gr.Markdown("No data to display.")
+
         process_txt_files_btn.click(
             process_txt_files,
             inputs=[txt_files_input, model_settings, task_settings, tasks_state],
@@ -146,6 +149,5 @@ with gr.Blocks(
         process_text_btn.click(
             process_text, inputs=[text_input, model_settings, task_settings, tasks_state], outputs=[data_state]
         )
-
 
 demo.launch()

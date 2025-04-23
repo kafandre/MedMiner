@@ -3,13 +3,14 @@ from typing import Any
 import gradio as gr
 import pandas as pd
 
+from medminer.task import TaskRegistry
 from medminer.ui.api import (
     process_csv_file,
     process_sql,
     process_text,
     process_txt_files,
 )
-from medminer.ui.settings import MODEL_TABS, TASK_SETTINGS
+from medminer.ui.settings import MODEL_TABS
 
 with gr.Blocks(
     title="MedMiner",
@@ -64,32 +65,28 @@ with gr.Blocks(
                                     )
 
             with gr.Accordion("Task settings"):
-                _tasks = [task.get("name", "") for task in TASK_SETTINGS.get("tasks", [])]
-                _task_ids = [task.get("id", "") for task in TASK_SETTINGS.get("tasks", [])]
+                reg = TaskRegistry()
+                tasks = reg.all()
 
                 tasks_input = gr.CheckboxGroup(
-                    label=TASK_SETTINGS.get("description", ""),
+                    label="Select the task you want to perform.",
                     type="index",
-                    choices=_tasks,
+                    choices=[task.verbose_name for task in tasks],
                 )
-                tasks_input.input(
-                    lambda tasks: [_task_ids[i] for i in tasks], inputs=[tasks_input], outputs=tasks_state
-                )
+                tasks_input.input(lambda ts: [tasks[i].name for i in ts], inputs=[tasks_input], outputs=tasks_state)
 
                 @gr.render(inputs=tasks_state)
                 def draw_task_settings(tasks: list[int]) -> None:
-                    for setting in TASK_SETTINGS.get("settings", []):
-                        if setting.get("dependent") and not any(
-                            [task in setting.get("dependent", []) for task in tasks]
-                        ):
+                    for setting in reg.all_settings():
+                        if setting.dependent and setting.dependent not in tasks:
                             continue
 
-                        _field = gr.Textbox(**setting.get("params", {}))
+                        _field = gr.Textbox(label=setting.label, **setting.params)
                         _field.input(
                             set_state,
                             inputs=[
                                 task_settings,
-                                gr.Textbox(value=setting.get("id"), visible=False),
+                                gr.Textbox(value=setting.id, visible=False),
                                 _field,
                             ],
                             outputs=task_settings,

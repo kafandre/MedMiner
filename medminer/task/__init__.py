@@ -1,6 +1,8 @@
-from medminer.task.base import Agent, Task
-from medminer.task.history import history_task
-from medminer.task.medication import medication_task
-from medminer.task.procedure import procedure_task
+from medminer.task.base import Task, TaskRegistry, TaskSetting, register_task
+from medminer.task.history import HistoryTask
+from medminer.task.medication import MedicationTask
+from medminer.task.procedure import ProcedureTask
 
-__all__ = ["Task", "Agent", "medication_task", "procedure_task", "history_task"]
+# from medminer.task.registry import
+
+__all__ = ["Task", "TaskSetting", "HistoryTask", "MedicationTask", "ProcedureTask", "TaskRegistry", "register_task"]

@@ -1,6 +1,8 @@
 import httpx
+from smolagents import tool
 
 
+@tool
 def search_snomed_procedures(term: str, limit: int = 100, semantic_tag: str = "procedure") -> list[dict]:
     """
     Search SNOMED CT for procedures matching the given term using a Snowstorm server.
@@ -39,4 +41,6 @@ def search_snomed_procedures(term: str, limit: int = 100, semantic_tag: str = "p
             if match["definitionStatus"] == "FULLY_DEFINED" and (semantic_tag is None or semantic_tag in match["fsn"]["term"])
         ]
 
+        return filtered_matches[:limit]
+        return filtered_matches[:limit]
         return filtered_matches[:limit]

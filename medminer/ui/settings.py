@@ -1,4 +1,4 @@
-from medminer.ui.types import ModelTabConfig, TaskSettingConfig
+from medminer.ui.types import ModelTabConfig
 from medminer.utils.models import imported_azure_openai, impoted_hf_transformer
 
 MODEL_TABS: list[ModelTabConfig] = [
@@ -27,24 +27,3 @@ MODEL_TABS: list[ModelTabConfig] = [
         ],
     },
 ]
-
-TASK_SETTINGS: TaskSettingConfig = {
-    "description": "Select the task you want to perform.",
-    "tasks": [
-        {"name": "Medication", "id": "medication"},
-        {"name": "Procedure", "id": "procedure"},
-        {"name": "Medical history", "id": "history"},
-    ],
-    "settings": [
-        {
-            "id": "icd_client_id",
-            "params": {"label": "ICD Client ID", "placeholder": "<client id>"},
-            "dependent": ["history"],
-        },
-        {
-            "id": "icd_client_secret",
-            "params": {"label": "ICD Client Secret", "placeholder": "<client secret>"},
-            "dependent": ["history"],
-        },
-    ],
-}

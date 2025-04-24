@@ -35,12 +35,6 @@ class Task(ABC):
     def agent(self) -> MultiStepAgent:
         return self._agent
 
-    # def get_agent(self, model: Model, **kwargs: Any) -> MultiStepAgent:
-    #     return self._agent_type(
-    #         self._tools, model,
-    #         **(self._agent_params | kwargs)
-    #     )
-
     def run(self, data: str) -> Any:
         return self.agent.run(
             dedent(

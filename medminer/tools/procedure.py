@@ -38,9 +38,8 @@ def search_snomed_procedures(term: str, limit: int = 100, semantic_tag: str = "p
                 "fsn": match["fsn"]["term"],
             }
             for match in items
-            if match["definitionStatus"] == "FULLY_DEFINED" and (semantic_tag is None or semantic_tag in match["fsn"]["term"])
+            if match["definitionStatus"] == "FULLY_DEFINED"
+            and (semantic_tag is None or semantic_tag in match["fsn"]["term"])
         ]
 
-        return filtered_matches[:limit]
-        return filtered_matches[:limit]
         return filtered_matches[:limit]

@@ -1,11 +1,14 @@
 from textwrap import dedent
 
-from medminer.task import Task
+from medminer.task import Task, register_task
 from medminer.tools import extract_medication_data, get_atc, get_rxcui, save_csv
 
-medication_task = Task(
-    name="medication",
-    prompt=dedent(
+
+@register_task
+class MedicationTask(Task):
+    name = "medication"
+    verbose_name = "Medication"
+    prompt = dedent(
         """\
         Given a list of medications, save all medications for the patient as csv. The medications can be in any language. The medications are usually in the format of a list of medications, with dosage and unit as well as their dosage timings (e.g. 1-0-1-0 for moring and evening but not noon or night). Every medication should have a single row, if there are multiple medications that can be extracted from a single piece of text, e.g. a combined medication, split them up. These are the steps you should follow to complete the task:
 
@@ -71,6 +74,5 @@ medication_task = Task(
         - atc_name: The name of the ATC code. if not applicable, write an empty string.
         - atc_type: The type of the ATC code. if not applicable, write an empty string.
         """
-    ),
-    tools=[save_csv, extract_medication_data, get_rxcui, get_atc],
-)
+    )
+    tools = [save_csv, extract_medication_data, get_rxcui, get_atc]

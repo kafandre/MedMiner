@@ -1,11 +1,14 @@
 from textwrap import dedent
 
-from medminer.task import Task
+from medminer.task import Task, register_task
 from medminer.tools import save_csv, search_snomed_procedures
 
-procedure_task = Task(
-    name="procedure",
-    prompt=dedent(
+
+@register_task
+class ProcedureTask(Task):
+    name = "procedure"
+    verbose_name = "Procedures"
+    prompt = dedent(
         """\
         Given a medical course of a patient, extract all given procedures and save all information as csv. The procedures can be in any language. The medical course is usually in the format of bullet points. Every procedure should have a single row, if there are multiple procedures that can be extracted from a single piece of text, split them up. These are the steps you should follow to complete the task:
 
@@ -37,6 +40,5 @@ procedure_task = Task(
         - snomed_id: The SNOMED CT ID of the procedure.
         - snomed_fsn: The fully specified name (FSN) of the procedure in SNOMED CT.
         """
-    ),
-    tools=[save_csv, search_snomed_procedures],
-)
+    )
+    tools = [save_csv, search_snomed_procedures]

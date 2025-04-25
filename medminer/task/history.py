@@ -1,12 +1,15 @@
 from textwrap import dedent
 
-from medminer.task import Task
+from medminer.task import Task, TaskSetting, register_task
 from medminer.tools.csv import save_csv
 from medminer.tools.diagnosis import extract_diagnosis_data, lookup_icd11
 
-history_task = Task(
-    name="history",
-    prompt=dedent(
+
+@register_task
+class HistoryTask(Task):
+    name = "history"
+    verbose_name = "Medical History"
+    prompt = dedent(
         """
         Given a medical history of a patient, extract all given diagnoses and save all information as csv. The diagnosis should be translated to english. The medical history is usually in the format of a sentence or a paragraph. Every diagnosis should have a single row, if there are multiple diagnosis that can be extracted from a single piece of text, split them up. These are the steps you should follow to complete the task:
         1. extract a part of the text that contains a diagnosis. The diagnosis can be in any language. This is the diagnosis_reference column.
@@ -44,6 +47,9 @@ history_task = Task(
         - year: The year of the medical history. if not applicable, write an empty string.
         - icd11_code: The ICD-11 code for the diagnosis. If there are no codes, write an empty string.
         """
-    ),
-    tools=[save_csv, extract_diagnosis_data, lookup_icd11],
-)
+    )
+    tools = [save_csv, extract_diagnosis_data, lookup_icd11]
+    settings = [
+        TaskSetting("icd_client_id", "ICD Client ID"),
+        TaskSetting("icd_client_secret", "ICD Client Secret", params={"type": "password"}),
+    ]

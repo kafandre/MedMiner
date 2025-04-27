@@ -24,9 +24,11 @@ class CSVTool(ToolSettingMixin, Tool):
     settings = [
         ToolSetting(id="session_id", label="Session ID", type=str),
         ToolSetting(id="task_name", label="Task Name", type=str),
+        ToolSetting(id="base_dir", label="Base Directory", type=Path),
     ]
     session_id: str
     task_name: str
+    base_dir: Path
 
     def forward(
         self,
@@ -57,7 +59,7 @@ class CSVTool(ToolSettingMixin, Tool):
 
         # small hack to get all keys from all dictionaries to have all possible columns
         fieldnames = dict.fromkeys(chain.from_iterable([d.keys() for d in data])).keys()
-        file_path = Path(__file__).parent.parent.parent / "result" / self.session_id / f"{self.task_name}.csv"
+        file_path = self.base_dir / self.session_id / f"{self.task_name}.csv"
         if not file_path.parent.exists():
             file_path.parent.mkdir(parents=True)
 

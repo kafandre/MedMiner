@@ -1,6 +1,6 @@
 from textwrap import dedent
 
-from medminer.task import Task, TaskSetting, register_task
+from medminer.task import Task, register_task
 from medminer.tools.csv import save_csv
 from medminer.tools.diagnosis import extract_diagnosis_data, lookup_icd11
 
@@ -49,7 +49,3 @@ class HistoryTask(Task):
         """
     )
     tools = [save_csv, extract_diagnosis_data, lookup_icd11]
-    settings = [
-        TaskSetting("icd_client_id", "ICD Client ID"),
-        TaskSetting("icd_client_secret", "ICD Client Secret", params={"type": "password"}),
-    ]

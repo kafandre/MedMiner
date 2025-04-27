@@ -16,7 +16,7 @@ class Task(ABC):
     agent_type: Type[MultiStepAgent] = ToolCallingAgent
     tools: list[Tool | Type[Tool]] = []
     agent_params: dict[str, Any] = {}
-    skip_settings: list[str] = ["task_name", "session_id"]
+    skip_settings: list[str] = ["task_name", "session_id", "base_dir"]
 
     def __init__(
         self,
@@ -120,6 +120,12 @@ class TaskRegistry:
         Get all tasks.
         """
         return list(self.tasks.values())
+
+    def filter(self, names: list[str]) -> list[Type[Task]]:
+        """
+        Get all tasks that match the name.
+        """
+        return [task for task in self.tasks.values() if task.name in names]
 
     def all_settings(self) -> list[ToolSetting]:
         """

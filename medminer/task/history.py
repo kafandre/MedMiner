@@ -1,7 +1,7 @@
 from textwrap import dedent
 
 from medminer.task import Task, register_task
-from medminer.tools.csv import save_csv
+from medminer.tools.csv import CSVTool
 from medminer.tools.diagnosis import extract_diagnosis_data, lookup_icd11
 
 
@@ -48,4 +48,4 @@ class HistoryTask(Task):
         - icd11_code: The ICD-11 code for the diagnosis. If there are no codes, write an empty string.
         """
     )
-    tools = [save_csv, extract_diagnosis_data, lookup_icd11]
+    tools = [CSVTool, extract_diagnosis_data, lookup_icd11]

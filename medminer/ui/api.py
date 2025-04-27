@@ -1,4 +1,9 @@
+import gradio as gr
 import pandas as pd
+
+from medminer.pipe import TaskPipeline
+from medminer.task.base import TaskRegistry
+from medminer.utils.models import DefaultModel
 
 
 def process_txt_files(
@@ -67,7 +72,7 @@ def process_sql(
 
 
 def process_text(
-    text: str, model_settings: dict[str, str], task_settings: dict[str, str], tasks: list[str]
+    request: gr.Request, text: str, model_settings: dict[str, str], task_settings: dict[str, str], tasks: list[str]
 ) -> dict[str, pd.DataFrame]:
     """Process a text with the specified tasks.
 
@@ -83,4 +88,15 @@ def process_text(
     if not text or not tasks:
         return {}
 
-    return {}
+    reg = TaskRegistry()
+
+    pipe = TaskPipeline(
+        tasks=reg.filter(tasks),
+        model=DefaultModel(**model_settings).model,
+        session_id=request.session_hash,
+        **task_settings,
+    )
+
+    dfs = pipe.run([text])
+
+    return {task_name.capitalize(): df for task_name, df in dfs.items()}

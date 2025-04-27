@@ -4,8 +4,8 @@ from typing import Any, Type
 
 @dataclass
 class ToolUISetting:
-    dependent: str | None = None
-    params: dict[str, str] = field(default_factory=dict)
+    dependent: list[str] = field(default_factory=list)
+    params: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

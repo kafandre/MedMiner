@@ -1,7 +1,7 @@
 from abc import ABC
 from functools import cache
 from textwrap import dedent, indent
-from typing import Any, Type, TypeVar, cast
+from typing import Any, Type, TypeVar
 from uuid import uuid4
 
 from smolagents import Model, MultiStepAgent, Tool, ToolCallingAgent
@@ -16,6 +16,7 @@ class Task(ABC):
     agent_type: Type[MultiStepAgent] = ToolCallingAgent
     tools: list[Tool | Type[Tool]] = []
     agent_params: dict[str, Any] = {}
+    skip_settings: list[str] = ["task_name", "session_id"]
 
     def __init__(
         self,
@@ -58,6 +59,9 @@ class Task(ABC):
 
             for setting in tool.settings:
                 if setting.id in settings:
+                    continue
+
+                if setting.id in cls.skip_settings:
                     continue
 
                 settings[setting.id] = setting
@@ -125,9 +129,10 @@ class TaskRegistry:
         for task in self.tasks.values():
             for setting in task.settings():
                 if setting.id in settings:
-                    cast(dict, settings[setting.id]).setdefault("ui", {}).setdefault("dependent", []).append(setting.id)
+                    settings[setting.id].ui.dependent.append(task.name)  # type: ignore[union-attr]
                     continue
 
+                setting.ui.dependent = [task.name]  # type: ignore[assignment]
                 settings[setting.id] = setting
 
         return list(settings.values())

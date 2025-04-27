@@ -75,10 +75,10 @@ with gr.Blocks(
                 @gr.render(inputs=tasks_state)
                 def draw_task_settings(tasks: list[int]) -> None:
                     for setting in reg.all_settings():
-                        if setting.dependent and setting.dependent not in tasks:
+                        if setting.ui.dependent and not any(task in setting.ui.dependent for task in tasks):
                             continue
 
-                        _field = gr.Textbox(label=setting.label, **setting.params)
+                        _field = gr.Textbox(label=setting.label, **setting.ui.params)
                         _field.input(
                             set_state,
                             inputs=[

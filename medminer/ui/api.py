@@ -57,10 +57,12 @@ def process_txt_files(
     """Process a list of files with the specified tasks.
 
     Args:
+        request: Gradio request object.
         files: List of file paths to process.
         model_settings: Model settings for the processing.
         task_settings: Task settings for the processing.
         tasks: List of tasks to perform on the files.
+        agent: Agent mode (single or multi).
 
     Returns:
         Dictionary containing the processed data.
@@ -94,11 +96,13 @@ def process_csv_file(
     """Process a CSV file with the specified tasks.
 
     Args:
+        request: Gradio request object.
         file: Path to the CSV file to process.
         column: Name of the column to process.
         model_settings: Model settings for the processing.
         task_settings: Task settings for the processing.
         tasks: List of tasks to perform on the files.
+        agent: Agent mode (single or multi).
 
     Returns:
         Dictionary containing the processed data.
@@ -129,10 +133,12 @@ def process_sql(
     """Process a SQL query with the specified tasks.
 
     Args:
+        request: Gradio request object.
         sql: SQL query to process.
         model_settings: Model settings for the processing.
         task_settings: Task settings for the processing.
         tasks: List of tasks to perform on the files.
+        agent: Agent mode (single or multi).
 
     Returns:
         Dictionary containing the processed data.
@@ -154,10 +160,12 @@ def process_text(
     """Process a text with the specified tasks.
 
     Args:
+        request: Gradio request object.
         text: Text to process.
         model_settings: Model settings for the processing.
         task_settings: Task settings for the processing.
         tasks: List of tasks to perform on the files.
+        agent: Agent mode (single or multi).
 
     Returns:
         Dictionary containing the processed data.

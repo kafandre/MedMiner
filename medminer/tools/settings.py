@@ -17,6 +17,8 @@ class ToolSetting:
 
 
 class ToolSettingMixin:
+    """Mixin class for tools with settings."""
+
     settings: list[ToolSetting] = []
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

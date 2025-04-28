@@ -1,5 +1,24 @@
-from medminer.ui.types import ModelTabConfig
+from typing import Any, TypedDict
+
 from medminer.utils.models import imported_azure_openai, impoted_hf_transformer
+
+
+class FieldConfig(TypedDict):
+    params: dict[str, Any]
+    id: str
+
+
+class DependentFieldConfig(FieldConfig):
+    dependent: list[str]
+
+
+class ModelTabConfig(TypedDict):
+    name: str
+    id: str
+    available: bool
+    description: str
+    fields: list[FieldConfig]
+
 
 MODEL_TABS: list[ModelTabConfig] = [
     {

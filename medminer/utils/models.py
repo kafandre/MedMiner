@@ -26,7 +26,18 @@ except ImportError:
 
 
 class DefaultModel:
+    """Default model class.
+    This class is used to initialize the model based on the provided parameters.
+    It checks for the presence of either Hugging Face Transformers or Azure OpenAI models.
+    If neither is available, it raises a ValueError.
+    """
+
     def __init__(self, **kwargs: str) -> None:
+        """Initialize the model.
+
+        Args:
+            kwargs: Keyword arguments containing model parameters.
+        """
         self._model = None
 
         if impoted_hf_transformer and (model_id := kwargs.get("hf_model_id", "") or os.getenv("HF_MODEL", "")):
@@ -49,6 +60,13 @@ class DefaultModel:
 
     @property
     def model(self) -> Model:
+        """Get the model.
+
+        Returns:
+            Model: The initialized model.
+        Raises:
+            ValueError: If the model is not initialized.
+        """
         if self._model is None:
             raise ValueError("")
         return self._model

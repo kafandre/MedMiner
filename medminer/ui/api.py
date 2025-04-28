@@ -1,7 +1,7 @@
 import gradio as gr
 import pandas as pd
 
-from medminer.pipe import TaskPipeline
+from medminer.pipe import SingleAgentPipeline
 from medminer.task.base import TaskRegistry
 from medminer.utils.models import DefaultModel
 
@@ -90,7 +90,7 @@ def process_text(
 
     reg = TaskRegistry()
 
-    pipe = TaskPipeline(
+    pipe = SingleAgentPipeline(
         tasks=reg.filter(tasks),
         model=DefaultModel(**model_settings).model,
         session_id=request.session_hash,

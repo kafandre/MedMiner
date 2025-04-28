@@ -35,7 +35,7 @@ class Pipeline(ABC):
         pass
 
 
-class TaskPipeline(Pipeline):
+class SingleAgentPipeline(Pipeline):
     """Pipeline for running tasks."""
 
     def run(self, data: list[str]) -> dict[str, pd.DataFrame]:

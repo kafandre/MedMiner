@@ -8,10 +8,6 @@ class FieldConfig(TypedDict):
     id: str
 
 
-class DependentFieldConfig(FieldConfig):
-    dependent: list[str]
-
-
 class ModelTabConfig(TypedDict):
     name: str
     id: str

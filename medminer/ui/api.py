@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import IntEnum
 from typing import Type
 
 import gradio as gr
@@ -9,7 +9,7 @@ from medminer.task.base import TaskRegistry
 from medminer.utils.models import DefaultModel
 
 
-class AgentMode(Enum):
+class AgentMode(IntEnum):
     SINGLE = 0
     MULTI = 1
 
@@ -34,12 +34,10 @@ def _process(
 
     reg = TaskRegistry()
 
-    pipe_csl: Type[Pipeline] = SingleAgentPipeline if agent == AgentMode.SINGLE else MultiAgentPipeline
-
-    pipe = pipe_csl(
+    pipe_cls: Type[Pipeline] = SingleAgentPipeline if agent == AgentMode.SINGLE else MultiAgentPipeline
+    pipe = pipe_cls(
         tasks=reg.filter(tasks),
         model=DefaultModel(**model_settings).model,
-        session_id=None,
         **task_settings,
     )
 
@@ -49,6 +47,7 @@ def _process(
 
 
 def process_txt_files(
+    request: gr.Request,
     files: list | None,
     model_settings: dict[str, str],
     task_settings: dict[str, str],
@@ -77,13 +76,14 @@ def process_txt_files(
     return _process(
         data=data,
         model_settings=model_settings,
-        task_settings=task_settings,
+        task_settings=task_settings | {"session_id": str(request.session_hash)},
         tasks=tasks,
         agent=agent,
     )
 
 
 def process_csv_file(
+    request: gr.Request,
     file: str | None,
     column: str | None,
     model_settings: dict[str, str],
@@ -112,14 +112,19 @@ def process_csv_file(
     return _process(
         data=data,
         model_settings=model_settings,
-        task_settings=task_settings,
+        task_settings=task_settings | {"session_id": str(request.session_hash)},
         tasks=tasks,
         agent=agent,
     )
 
 
 def process_sql(
-    sql: str, model_settings: dict[str, str], task_settings: dict[str, str], tasks: list[str], agent: str
+    request: gr.Request,
+    sql: str,
+    model_settings: dict[str, str],
+    task_settings: dict[str, str],
+    tasks: list[str],
+    agent: str,
 ) -> dict[str, pd.DataFrame]:
     """Process a SQL query with the specified tasks.
 
@@ -163,7 +168,7 @@ def process_text(
     return _process(
         data=[text],
         model_settings=model_settings,
-        task_settings=task_settings,
+        task_settings=task_settings | {"session_id": str(request.session_hash)},
         tasks=tasks,
         agent=agent,
     )

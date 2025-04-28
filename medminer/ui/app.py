@@ -147,13 +147,13 @@ with gr.Blocks(
         )
         process_sql_btn.click(
             process_sql,
-            inputs=[sql_input, model_settings, task_settings, tasks_state],
-            outputs=[data_state, agent_input],
+            inputs=[sql_input, model_settings, task_settings, tasks_state, agent_input],
+            outputs=[data_state],
         )
         process_text_btn.click(
             process_text,
-            inputs=[text_input, model_settings, task_settings, tasks_state],
-            outputs=[data_state, agent_input],
+            inputs=[text_input, model_settings, task_settings, tasks_state, agent_input],
+            outputs=[data_state],
         )
 
 demo.launch()

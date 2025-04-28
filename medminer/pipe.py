@@ -30,7 +30,7 @@ class Pipeline(ABC):
         self.settings = kwargs
 
     @abstractmethod
-    def run(self, *args: Any, **kwargs: Any) -> dict[str, pd.DataFrame]:
+    def run(self, data: list[str]) -> dict[str, pd.DataFrame]:
         """Run the pipeline."""
         pass
 
@@ -62,7 +62,7 @@ class SingleAgentPipeline(Pipeline):
 class MultiAgentPipeline(Pipeline):
     """Pipeline for running multiple agents."""
 
-    def run(self, data: str) -> dict[str, pd.DataFrame]:
+    def run(self, data: list[str]) -> dict[str, pd.DataFrame]:
         """Run the pipeline.
 
         Args:

@@ -47,7 +47,13 @@ class Task(ABC):
 
             tools.append(tool(**kwargs))
 
-        self._agent = self.agent_type(tools, model, **self.agent_params)
+        self._agent = self.agent_type(
+            tools,
+            model,
+            name=self.name,
+            description=f"Extracts and save the {self.verbose_name} for the given data",
+            **self.agent_params,
+        )
 
     @property
     def agent(self) -> MultiStepAgent:

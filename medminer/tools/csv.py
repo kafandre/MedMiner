@@ -8,6 +8,8 @@ from medminer.tools.settings import ToolSetting, ToolSettingMixin
 
 
 class CSVTool(ToolSettingMixin, Tool):
+    """A tool for saving data to a csv file."""
+
     name = "save_csv"
     description = "Saves data to a csv file."
     inputs = {

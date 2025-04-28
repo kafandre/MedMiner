@@ -39,6 +39,8 @@ def extract_diagnosis_data(
 
 
 class ICDDiagnosisTool(ToolSettingMixin, Tool):
+    """A tool for looking up ICD-11 codes for a list of terms."""
+
     name = "lookup_icd11"
     description = "Lookup ICD-11 codes for a list of terms."
     inputs = {
@@ -69,10 +71,6 @@ class ICDDiagnosisTool(ToolSettingMixin, Tool):
         Authenticate with the WHO ICD API and return an access token.
         Caches the token for the period it is valid to reduce roundtrip time.
         """
-
-        SCOPE = "icdapi_access"
-        GRANT_TYPE = "client_credentials"
-
         # Check if the cached token is still valid
         if self._token_cache["token"] and time.time() < self._token_cache["expires_at"]:  # type: ignore[operator]
             return self._token_cache["token"]  # type: ignore[return-value]
@@ -80,8 +78,8 @@ class ICDDiagnosisTool(ToolSettingMixin, Tool):
         payload = {
             "client_id": self.icd_client_id,
             "client_secret": self.icd_client_secret,
-            "scope": SCOPE,
-            "grant_type": GRANT_TYPE,
+            "scope": "icdapi_access",
+            "grant_type": "client_credentials",
         }
         base_url = "https://icdaccessmanagement.who.int/"
         with httpx.Client(verify=True, base_url=base_url) as client:

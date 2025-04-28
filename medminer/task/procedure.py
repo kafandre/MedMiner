@@ -42,4 +42,4 @@ class ProcedureTask(Task):
         - snomed_fsn: The fully specified name (FSN) of the procedure in SNOMED CT.
         """
     )
-    tools = [CSVTool, search_snomed_procedures]  # noqa: F821
+    tools = [CSVTool, search_snomed_procedures]

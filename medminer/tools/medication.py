@@ -43,12 +43,6 @@ def get_rxcui(medication_names: list[str]) -> dict:
     """
     Get medication information for a given list of medication names.
 
-    Args:
-        medication_names: A list of corrected medication names.
-
-    Returns:
-        A dictionary containing the medication information (e.g. rxcui and supporting sources).
-
     Example:
         >>> medication_names = ["Aspirin", "Paracetamol"]
         >>> get_rxcui(medication_names)
@@ -56,6 +50,12 @@ def get_rxcui(medication_names: list[str]) -> dict:
             "Aspirin": {"12345": ["RXNORM"]},
             "Paracetamol": {"67890": ["RXNORM"]},
         }
+
+    Args:
+        medication_names: A list of corrected medication names.
+
+    Returns:
+        A dictionary containing the medication information (e.g. rxcui and supporting sources).
     """
     data: dict[str, dict] = {}
 

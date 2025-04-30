@@ -65,6 +65,14 @@ with gr.Blocks(
                 reg = TaskRegistry()
                 tasks = reg.all()
 
+                agent_input = gr.Radio(
+                    choices=["Single Agent", "Multi Agent"],
+                    label="Agent Mode",
+                    type="index",
+                    value="Single Agent",
+                    interactive=True,
+                )
+
                 tasks_input = gr.CheckboxGroup(
                     label="Select the task you want to perform.",
                     type="index",
@@ -75,10 +83,10 @@ with gr.Blocks(
                 @gr.render(inputs=tasks_state)
                 def draw_task_settings(tasks: list[int]) -> None:
                     for setting in reg.all_settings():
-                        if setting.dependent and setting.dependent not in tasks:
+                        if setting.ui.dependent and not any(task in setting.ui.dependent for task in tasks):
                             continue
 
-                        _field = gr.Textbox(label=setting.label, **setting.params)
+                        _field = gr.Textbox(label=setting.label, **setting.ui.params)
                         _field.input(
                             set_state,
                             inputs=[
@@ -129,19 +137,23 @@ with gr.Blocks(
 
         process_txt_files_btn.click(
             process_txt_files,
-            inputs=[txt_files_input, model_settings, task_settings, tasks_state],
+            inputs=[txt_files_input, model_settings, task_settings, tasks_state, agent_input],
             outputs=[data_state],
         )
         process_csv_file_btn.click(
             process_csv_file,
-            inputs=[csv_file_input, csv_column_input, model_settings, task_settings, tasks_state],
+            inputs=[csv_file_input, csv_column_input, model_settings, task_settings, tasks_state, agent_input],
             outputs=[data_state],
         )
         process_sql_btn.click(
-            process_sql, inputs=[sql_input, model_settings, task_settings, tasks_state], outputs=[data_state]
+            process_sql,
+            inputs=[sql_input, model_settings, task_settings, tasks_state, agent_input],
+            outputs=[data_state],
         )
         process_text_btn.click(
-            process_text, inputs=[text_input, model_settings, task_settings, tasks_state], outputs=[data_state]
+            process_text,
+            inputs=[text_input, model_settings, task_settings, tasks_state, agent_input],
+            outputs=[data_state],
         )
 
 demo.launch()

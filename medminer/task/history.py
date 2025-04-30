@@ -1,8 +1,8 @@
 from textwrap import dedent
 
-from medminer.task import Task, TaskSetting, register_task
-from medminer.tools.csv import save_csv
-from medminer.tools.diagnosis import extract_diagnosis_data, lookup_icd11
+from medminer.task import Task, register_task
+from medminer.tools.csv import CSVTool
+from medminer.tools.diagnosis import ICDDiagnosisTool, extract_diagnosis_data
 
 
 @register_task
@@ -48,8 +48,4 @@ class HistoryTask(Task):
         - icd11_code: The ICD-11 code for the diagnosis. If there are no codes, write an empty string.
         """
     )
-    tools = [save_csv, extract_diagnosis_data, lookup_icd11]
-    settings = [
-        TaskSetting("icd_client_id", "ICD Client ID"),
-        TaskSetting("icd_client_secret", "ICD Client Secret", params={"type": "password"}),
-    ]
+    tools = [CSVTool, extract_diagnosis_data, ICDDiagnosisTool]

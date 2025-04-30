@@ -1,7 +1,7 @@
 from textwrap import dedent
 
 from medminer.task import Task, register_task
-from medminer.tools import extract_medication_data, get_atc, get_rxcui, save_csv
+from medminer.tools import CSVTool, extract_medication_data, get_atc, get_rxcui
 
 
 @register_task
@@ -75,4 +75,4 @@ class MedicationTask(Task):
         - atc_type: The type of the ATC code. if not applicable, write an empty string.
         """
     )
-    tools = [save_csv, extract_medication_data, get_rxcui, get_atc]
+    tools = [CSVTool, extract_medication_data, get_rxcui, get_atc]

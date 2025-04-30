@@ -1,5 +1,7 @@
+import tempfile
 from abc import ABC
 from functools import cache
+from pathlib import Path
 from textwrap import dedent, indent
 from typing import Any, Type, TypeVar
 from uuid import uuid4
@@ -35,6 +37,8 @@ class Task(ABC):
         kwargs["task_name"] = self.name
         if "session_id" not in kwargs:
             kwargs["session_id"] = uuid4().hex
+        if "base_dir" not in kwargs:
+            kwargs["base_dir"] = Path(tempfile.mkdtemp())
 
         tools = []
         for tool in self.tools:

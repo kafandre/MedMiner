@@ -14,6 +14,13 @@ def extract_diagnosis_data(
     """
     Adds extracted data to the task memory.
 
+    Example:
+        >>> data = [
+        ...     {"patient_id": 1, "diagnosis": "Myocardial Infarction"},
+        ...     {"patient_id": 2, "diagnosis": "colon cancer"},
+        ... ]
+        >>> extract_diagnosis_data("diagnosis", data)
+
     Args:
         data: A list of dictionaries containing the data to save
 
@@ -27,13 +34,6 @@ def extract_diagnosis_data(
 
     Returns:
         A message indicating where the data was saved.
-
-    Example:
-        >>> data = [
-        ...     {"patient_id": 1, "diagnosis": "Myocardial Infarction"},
-        ...     {"patient_id": 2, "diagnosis": "colon cancer"},
-        ... ]
-        >>> extract_diagnosis_data("diagnosis", data)
     """
     return data
 

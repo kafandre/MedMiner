@@ -74,19 +74,39 @@ class MultiAgentPipeline(Pipeline):
         """
         prompt = dedent(
             f"""\
-        You are a medical data processing agent.
+        You are a medical data extraction agent.
         You will receive a list of tasks to perform on the data.
-        Each task has a name and a prompt and a corresponding agent.
-        Use every the corresponding to perfom the task.
-        Additionally to the data, provide the task, examples and addtions of a taks to the corresponding agent.
-        Provide these informations as flatten text.
+        Each task has a name, prompt and a corresponding managed agent.
+        Use every the corresponding agent to perfom the task.
+        Call the agent with the prompt (enclosed by ```) and the data.
+        Provide the information as one text to the agent.
+        The agent won't report the result, but will save it to a file.
+
+        Example input:
+            Task name: Medication
+            Prompt:
+            ```
+            Instructions ...
+            Examples ...
+            Column definitions...
+            ```
+
+            ---
+            Data: ...
+        Example Agent instructions:
+            Instructions ...
+            Examples ...
+            Column definitions...
+            ---
+
+            Data: ...
 
         Tasks to perform: {', '.join(task.name for task in self.tasks)}
         """
         )
 
         task_prompt = f"\n\n{'-' * 80}".join(
-            f"Task name: {task.name}\nPrompt: \n{task.prompt}\n\n" for task in self.tasks
+            f"Task name: {task.name}\nPrompt: \n```\n{task.prompt}\n```\n\n" for task in self.tasks
         )
 
         return f"{prompt}{'-' * 80}\n\n{task_prompt}{'-' * 80}\n\nData: \n{data}"

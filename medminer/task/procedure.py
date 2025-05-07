@@ -1,7 +1,7 @@
 from textwrap import dedent
 
 from medminer.task import Task, register_task
-from medminer.tools import search_snomed_procedures
+from medminer.tools import SNOMEDTool
 from medminer.tools.csv import CSVTool
 
 
@@ -42,4 +42,4 @@ class ProcedureTask(Task):
         - snomed_fsn: The fully specified name (FSN) of the procedure in SNOMED CT.
         """
     )
-    tools = [CSVTool, search_snomed_procedures]
+    tools = [CSVTool, SNOMEDTool]

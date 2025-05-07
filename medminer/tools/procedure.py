@@ -40,8 +40,6 @@ class SNOMEDTool(ToolSettingMixin, Tool):
     description = "Search SNOMED CT for procedures matching the given term."
     inputs = {
         "term": {"type": "string", "description": "The search term (written out text) to query."},
-        "limit": {"type": "integer", "description": "The maximum number of results to return.", "nullable": True},
-        "semantic_tag": {"type": "string", "description": "The semantic tag to filter results by.", "nullable": True},
     }
     output_type = "array"
     settings = [
@@ -54,8 +52,6 @@ class SNOMEDTool(ToolSettingMixin, Tool):
     def forward(
         self,
         term: str,
-        limit: int = 100,
-        semantic_tag: str = "procedure",
     ) -> list[dict]:
         """
         Search SNOMED CT for procedures matching the given term.
@@ -68,7 +64,7 @@ class SNOMEDTool(ToolSettingMixin, Tool):
         Returns:
             list[dict]: A list of dictionaries containing procedure details.
         """
-
+        limit = 100
         params = {
             "activeFilter": "true",  # Recommended filter by SNOMED CT
             "termActive": "true",  # Recommended filter by SNOMED CT
@@ -91,6 +87,6 @@ class SNOMEDTool(ToolSettingMixin, Tool):
             filtered_matches = sorted(
                 filtered_matches,
                 key=lambda x: int(x["id"]),
-            )
+            )  # Todo Fix Sorting
 
             return filtered_matches[:limit]

@@ -86,7 +86,7 @@ class SNOMEDTool(ToolSettingMixin, Tool):
                     "fsn": match["fsn"]["term"],
                 }
                 for match in items
-                if match["definitionStatus"] == "FULLY_DEFINED"
+                if match["definitionStatus"] in ["FULLY_DEFINED", "PRIMITIVE"]
             ]
             filtered_matches = sorted(
                 filtered_matches,

@@ -1,3 +1,8 @@
+from __future__ import annotations
+
+from enum import StrEnum, auto
+from itertools import combinations
+
 import httpx
 from smolagents import Tool, tool
 
@@ -33,6 +38,14 @@ def extract_procedure_data(
     return data
 
 
+class SNOMEDQueryMethod(StrEnum):
+    """Enum for SNOMED CT query types."""
+
+    STRICT = auto()
+    SUBSET = auto()
+    ANY = auto()
+
+
 class SNOMEDTool(ToolSettingMixin, Tool):
     """A tool for searching SNOMED CT concepts."""
 
@@ -48,6 +61,28 @@ class SNOMEDTool(ToolSettingMixin, Tool):
     ]
     base_url: str
     edition: str
+
+    def _build_ecl_query(self, term: str, method: SNOMEDQueryMethod) -> str:
+        """
+        Build the ECL query for SNOMED CT.
+
+        Args:
+            term (str): The search term to query.
+
+        Returns:
+            str: The ECL query string.
+        """
+        procedure_definition = "< 71388002|Procedure|"
+
+        if method == SNOMEDQueryMethod.STRICT:
+            return f'{procedure_definition} {{{{ term = "{term}"}}}}'
+
+        terms = term.split(" ")
+        if method == SNOMEDQueryMethod.SUBSET and len(terms) > 2:
+            sub_terms = [" ".join(comb) for i in range(1, len(terms)) for comb in combinations(terms, i + 1)]
+            return f'{procedure_definition} {{{{ term = ("{'" "'.join(sub_terms)}")}}}} '
+
+        return f'< 71388002|Procedure| {{{{ term = ("{'" "'.join(terms)}")}}}}'
 
     def forward(
         self,
@@ -71,9 +106,14 @@ class SNOMEDTool(ToolSettingMixin, Tool):
             "ecl": f'< 71388002|Procedure| {{{{ term = "{term}"}}}}',
         }
         with httpx.Client(base_url=self.base_url) as client:
-            response = client.get(f"{self.edition}/concepts", params=params)
-            response.raise_for_status()
-            items = response.json().get("items", [])
+            for method in SNOMEDQueryMethod:
+                params["ecl"] = self._build_ecl_query(term, method)
+                response = client.get(f"{self.edition}/concepts", params=params)
+                response.raise_for_status()
+                items = response.json().get("items", [])
+
+                if items:
+                    break
 
             filtered_matches = [
                 {

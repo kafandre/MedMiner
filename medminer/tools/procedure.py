@@ -68,7 +68,7 @@ class SNOMEDTool(ToolSettingMixin, Tool):
         params = {
             "activeFilter": "true",  # Recommended filter by SNOMED CT
             "termActive": "true",  # Recommended filter by SNOMED CT
-            "ecl": f'<71388002|Procedure| {{{{ term = "{term}"}}}}',
+            "ecl": f'< 71388002|Procedure| {{{{ term = "{term}"}}}}',
         }
         with httpx.Client(base_url=self.base_url) as client:
             response = client.get(f"{self.edition}/concepts", params=params)
@@ -86,7 +86,7 @@ class SNOMEDTool(ToolSettingMixin, Tool):
             ]
             filtered_matches = sorted(
                 filtered_matches,
-                key=lambda x: int(x["id"]),
-            )  # Todo Fix Sorting
+                key=lambda x: len(x["fsn"]),
+            )
 
             return filtered_matches[:limit]

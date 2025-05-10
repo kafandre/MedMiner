@@ -17,7 +17,7 @@ class ProcedureTask(Task):
         To complete the task make the following steps:
         1. Extract the procedures from the text. The procedure can be in any language. This is the `procedure_reference` column.
         2. If the procedure name is not in English, translate it to English and infer the `procedure_corrected` column. Correct any misspellings in the process. Change abbreviations to full words. For example, "CT" should be changed to "Computed Tomography".
-        3. Extract the relevant procedure as a string. This is the `procedure_search` column. Separate the words with a space.
+        3. Extract the relevant procedure as a search tearm. This is the `procedure_search` column. Separate the words with a space. Remove unnecessary stop words. Use the `search_snomed_procedures` tool to search for SNOMED CT concepts in a snowstorm server.
         4. Extract the relevant procedure as a string and remove everything that is not relevant. This is the `procedure` column.
         5. Extract the date of the procedure. If not applicable, write an empty string. This is the `date` column.
         6. Use the `search_snomed_procedures` tool to find SNOMED CT concepts for the extracted procedures (`procedure_search`). Add the SNOMED CT ID and fully specified name (FSN) to the output. You will get back a list of dictionaries with the following keys: ids and fsn. Usually the first candidate is the best choice, but you can decide otherwise if you have reasonable grounds for another decision if you compare the extracted information with the returned descriptions from the snomed server. If there are no codes, write an empty string. This is the `snomed_id` and `snomed_fsn` columns.

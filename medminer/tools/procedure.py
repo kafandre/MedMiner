@@ -79,7 +79,7 @@ class SNOMEDTool(ToolSettingMixin, Tool):
 
         terms = term.split(" ")
         if method == SNOMEDQueryMethod.SUBSET and len(terms) > 2:
-            sub_terms = [" ".join(comb) for i in range(1, len(terms)) for comb in combinations(terms, i + 1)]
+            sub_terms = [" ".join(comb) for i in reversed(range(1, len(terms))) for comb in combinations(terms, i + 1)]
             return f'{procedure_definition} {{{{ term = ("{'" "'.join(sub_terms)}")}}}} '
 
         return f'< 71388002|Procedure| {{{{ term = ("{'" "'.join(terms)}")}}}}'

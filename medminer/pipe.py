@@ -19,7 +19,7 @@ class Pipeline(ABC):
         Args:
             tasks: List of tasks to perform.
             model: Model to use for processing.
-            settings: Dictionary containing both task and model settings.
+            kwargs: Dictionary containing both task and model settings.
         """
         if "session_id" not in kwargs:
             kwargs["session_id"] = uuid4().hex

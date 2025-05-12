@@ -1,4 +1,4 @@
-site_name: project_name
+site_name: Medminer
 docs_dir: docs
 nav:
 - Getting Started:

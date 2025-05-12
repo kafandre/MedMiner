@@ -43,6 +43,8 @@ services:
     ports:
       - 127.0.0.1:9200:9200
     mem_reservation: 4g
+    profiles:
+    - dev
 
   snowstorm:
     image: snomedinternational/snowstorm:latest
@@ -58,6 +60,8 @@ services:
          - snowstorm
     ports:
       - 8080:8080
+    profiles:
+    - dev
 
   browser:
     image: snomedinternational/snomedct-browser:latest
@@ -73,6 +77,8 @@ services:
     ports:
       - 80:80
     restart: always
+    profiles:
+    - dev
 
 networks:
   elastic:

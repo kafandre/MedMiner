@@ -1,3 +1,7 @@
+"""
+This module contains the base task and registry for the MedMiner project.
+"""
+
 import tempfile
 from abc import ABC
 from functools import cache

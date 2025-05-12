@@ -1,3 +1,7 @@
+"""
+This module contains various tools for extracting and processing medical data.
+"""
+
 from collections import defaultdict
 
 import httpx

@@ -1,3 +1,7 @@
+"""
+Tabs settings for the model configuration in the Gradio UI.
+"""
+
 from typing import Any, TypedDict
 
 from medminer.utils.models import imported_azure_openai, impoted_hf_transformer

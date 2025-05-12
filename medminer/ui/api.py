@@ -1,3 +1,8 @@
+"""
+Callback API for Gradio UI.
+"""
+
+
 from enum import IntEnum
 from typing import Type
 

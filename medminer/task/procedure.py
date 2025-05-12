@@ -1,3 +1,7 @@
+"""
+This module contains the ProcedureTask class, which is responsible for extracting and processing medical procedures from text data.
+"""
+
 from textwrap import dedent
 
 from medminer.task import Task, register_task

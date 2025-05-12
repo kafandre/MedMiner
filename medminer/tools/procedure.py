@@ -1,3 +1,7 @@
+"""
+This module contains various tools for extracting and processing medical data.
+"""
+
 import httpx
 from smolagents import tool
 

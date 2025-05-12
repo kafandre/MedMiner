@@ -1,3 +1,6 @@
+"""
+This module contains various tools for extracting and processing medical data.
+"""
 from __future__ import annotations
 
 from enum import StrEnum, auto

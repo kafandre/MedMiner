@@ -136,3 +136,56 @@ def get_atc(
             }
 
     return data
+
+
+@tool
+def get_va(
+    rxcuis: list[str],
+) -> dict:
+    """
+    Get medication va information for a given list of rxcuis.
+
+    Args:
+        rxcuis: A list of corrected rxcuis.
+
+    Returns:
+        A dictionary containing the medication information (e.g. VA Code).
+    """
+    data: dict[str, dict[str, str]] = {}
+
+    base_url = "https://rxnav.nlm.nih.gov/REST/"
+    with httpx.Client(base_url=base_url) as client:
+        for rxcui in rxcuis:
+            params = {
+                "rxcui": rxcui,
+            }
+            atc = next(
+                (
+                    cand
+                    for cand in (
+                        client.get("rxclass/class/byRxcui.json", params=params)
+                        .json()
+                        .get("rxclassDrugInfoList", {})
+                        .get("rxclassDrugInfo", [])
+                    )
+                    if "va" in cand["relaSource"].lower()
+                ),
+                None,
+            )
+
+            if not atc:
+                data[rxcui] = {}
+                continue
+
+            concept = atc.get("rxclassMinConceptItem", {})
+
+            if not concept:
+                data[rxcui] = {}
+                continue
+
+            data[rxcui] = {
+                "va_id": concept.get("classId"),
+                "va_name": concept.get("className"),
+            }
+
+    return data

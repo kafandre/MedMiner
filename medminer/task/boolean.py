@@ -1,7 +1,7 @@
 from textwrap import dedent, indent
 
 from medminer.task import Task, register_task
-from medminer.tools.csv import CSVTool
+from medminer.tools import CSVTool, get_rxcui, get_va
 from medminer.tools.settings import ToolSetting
 
 
@@ -15,6 +15,11 @@ class BooleanTask(Task):
 
         1. Check if the medical information of the patient matches the filter query.
         2. save the information as csv with the columns defined below.
+        3a. If the patient information contains a list of medications, extract the medications from the text. The medication can be in any language.
+        3b. If the medication name is not in english, translate it to english and infer the name. Correct any misspellings in the process. Use the following format "Brand name or medication name (active ingredient)". e.g. "Aspirin (acetylsalicylic acid)".
+        3c. get the RXCUI for all medications. Use the active ingredient of the medications. If there are multiple RXCUI codes, choose the one that fits the best to the translated medication. Usually, the first candidate with a score of 1 is the best choice, but you can decide otherwise if you have reasonable grounds for another decision. If there are no codes, write an empty string.
+        3d. get the VA code and information for all medications. Use the rxcui of the medications.
+        3e. look if the VA code of one of the medications matches the filter query. If yes, save the patient information.
 
         save the the following columns:
         - patient_id: The patient ID.
@@ -22,7 +27,7 @@ class BooleanTask(Task):
         - patient_information: The medical information of the patient that matched the query.
         """
     )
-    tools = [CSVTool]
+    tools = [CSVTool, get_rxcui, get_va]
 
     @classmethod
     def settings(cls) -> list[ToolSetting]:

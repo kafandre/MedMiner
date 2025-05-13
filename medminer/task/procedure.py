@@ -24,29 +24,39 @@ class ProcedureTask(Task):
         3. Extract the relevant procedure as a search term. Separate the words with a space. Remove unnecessary stop words. Make sure spelling is correct. Make sure you're only searching for one procedure at the time, This is the `procedure_search` column.
         5. Extract the date of the procedure. If not applicable, write an empty string. This is the `year`, `month` and `day` column. Write an empty string if not applicable.
 
-        After you extracted all relevant procedures go through each of the procedure_search_terms and search for the SNOMED CT ID and FSN. The SNOMED CT ID is a unique identifier for the procedure in the SNOMED CT database. The FSN is a fully specified name (FSN) of the procedure in SNOMED CT.  Use the `search_snomed_procedures` tool to find SNOMED CT concepts for the extracted procedures (`procedure_search`). You will get back a list of dictionaries with the following keys: ids and fsn. Compare the extracted information with the returned descriptions from the snomed server and choose the returned concept that matches the searched term the closest. Make sure not do add or loose any detail. If there are no codes, write an empty string. This is the `snomed_id` and `snomed_fsn` columns.
+        After you extracted all relevant procedures go through each of the procedure_search_terms and search for the SNOMED CT ID and FSN.
+        The SNOMED CT ID is a unique identifier for the procedure in the SNOMED CT database.
+        The FSN is a fully specified name (FSN) of the procedure in SNOMED CT.
+        Use the `search_snomed_procedures` tool to find SNOMED CT concepts to finde the information by following these steps:
+        - supply the `procedure_search` term to the `term` parameter of the tool.
+        - supply synonyms (e.g. {"Cranial": "Head"}) for the words in the search term to the `synonyms` parameter of the tool. if there are no synonyms, write an empty dict.
+        - supply additional keywords (e.g. CT) to the `keywords` parameter of the tool. If there are no additional keywords, write an empty list.
+        If possible add synonyms for words in the search term and additional keywords to the tool call.
+        You will get back a list of dictionaries with the following keys: ids and fsn.
+        Compare the extracted information with the returned descriptions from the snomed server and choose the returned concept that matches the searched term the closest.
+        Make sure not do add or loose any detail. If there are no codes, write an empty string. This is the `snomed_id` and `snomed_fsn` columns.
 
         Example 1:
         Input: "Colonoscopy performed on 2023-04-15"
         Output: [
-            {"patient_id": 1, "procedure_reference": "Colonoscopy performed on 2023-04-15", "procedure_corrected": "Colonoscopy", "procedure_search": "Colonoscopy", 
+            {"patient_id": 1, "procedure_reference": "Colonoscopy performed on 2023-04-15", "procedure_corrected": "Colonoscopy", "procedure_search": "Colonoscopy",
             "year": 2023, "month": 4, "day": 15, "snomed_id": "73761001", "snomed_fsn": "Colonoscopy (procedure)"},
-    
+
         ]
 
         Example 2:
         Input: "Gastroscopy and biopsy conducted on 2023-03-10"
         Output: [
-            {"patient_id": 2, "procedure_reference": "Gastroscopy and biopsy conducted on 2023-03-10", "procedure_corrected": "Gastroscopy", "procedure_search": "Gastroscopy", 
+            {"patient_id": 2, "procedure_reference": "Gastroscopy and biopsy conducted on 2023-03-10", "procedure_corrected": "Gastroscopy", "procedure_search": "Gastroscopy",
             "year": 2023, "month": 3, "day": 10, "snomed_id": "274441001", "snomed_fsn": "Gastroscopy (procedure)"},
-            {"patient_id": 2, "procedure_reference": "Gastroscopy and biopsy conducted on 2023-03-10", "procedure_corrected": "Biopsy", "procedure_search": "Biopsy", 
+            {"patient_id": 2, "procedure_reference": "Gastroscopy and biopsy conducted on 2023-03-10", "procedure_corrected": "Biopsy", "procedure_search": "Biopsy",
             "year": 2023, "month": 3, "day": 10, "snomed_id": "118234003", "snomed_fsn": "Biopsy (procedure)"},
         ]
-        
+
         Example 3:
         Input: "CT scan of the abdomen on 05-20"
         Output: [
-            {"patient_id": 3, "procedure_reference": "CT scan of the abdomen on 05-20", "procedure_corrected": "Computed Tomography scan of the abdomen", "procedure_search": "Computed Tomography scan of the abdomen", 
+            {"patient_id": 3, "procedure_reference": "CT scan of the abdomen on 05-20", "procedure_corrected": "Computed Tomography scan of the abdomen", "procedure_search": "Computed Tomography scan of the abdomen",
             "year": "", "month": 5, "day": 20, "snomed_id": "938264203", "snomed_fsn": "Computed Tomography scan of the abdomen (procedure)"},
         ]
 
@@ -58,7 +68,7 @@ class ProcedureTask(Task):
         - year: The year of the procedure.
         - month: The month of the procedure.
         - day: The day of the procedure.
-        
+
         - snomed_id: The SNOMED CT ID of the procedure.
         - snomed_fsn: The fully specified name (FSN) of the procedure in SNOMED CT.
         """

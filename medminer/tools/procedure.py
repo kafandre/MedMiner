@@ -3,8 +3,8 @@ This module contains various tools for extracting and processing medical data.
 """
 from __future__ import annotations
 
-from enum import StrEnum, auto
 from itertools import combinations
+from typing import Iterator
 
 import httpx
 from smolagents import Tool, tool
@@ -41,14 +41,6 @@ def extract_procedure_data(
     return data
 
 
-class SNOMEDQueryMethod(StrEnum):
-    """Enum for SNOMED CT query types."""
-
-    STRICT = auto()
-    SUBSET = auto()
-    ANY = auto()
-
-
 class SNOMEDTool(ToolSettingMixin, Tool):
     """A tool for searching SNOMED CT concepts."""
 
@@ -56,6 +48,16 @@ class SNOMEDTool(ToolSettingMixin, Tool):
     description = "Search SNOMED CT for procedures matching the given term."
     inputs = {
         "term": {"type": "string", "description": "The search term (written out text) to query."},
+        "synonyms": {
+            "type": "object",
+            "items": {"type": "string"},
+            "description": "A dictionary of synonyms for the words in the search term. e.g. {'Cranial': 'Head'}",
+        },
+        "keywords": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "A list of keywords to search for in addition to the search term e.g. ['CT', 'MRI']",
+        },
     }
     output_type = "array"
     settings = [
@@ -65,42 +67,61 @@ class SNOMEDTool(ToolSettingMixin, Tool):
     base_url: str
     edition: str
 
-    def _build_ecl_query(self, term: str, method: SNOMEDQueryMethod) -> str:
+    def _build_ecl_queries(
+        self,
+        term: str,
+        synonyms: dict[str, str],
+        keywords: list[str],
+    ) -> Iterator[str]:
         """
         Build the ECL query for SNOMED CT.
 
         Args:
-            term (str): The search term to query.
+            term: The search term to query.
+            synonyms: A dictionary of synonyms for the words in the search term.
+            keywords: A list of keywords to search for.
 
         Returns:
-            str: The ECL query string.
+            The ECL query string.
         """
+
         procedure_definition = "< 71388002|Procedure|"
 
-        if method == SNOMEDQueryMethod.STRICT:
-            return f'{procedure_definition} {{{{ term = "{term}"}}}}'
+        yield f'{procedure_definition} {{{{ term = "{term}"}}}}'
 
-        terms = term.split(" ")
-        if method == SNOMEDQueryMethod.SUBSET and len(terms) > 2:
-            sub_terms = [" ".join(comb) for i in reversed(range(1, len(terms))) for comb in combinations(terms, i + 1)]
-            return f'{procedure_definition} {{{{ term = ("{'" "'.join(sub_terms)}")}}}} '
+        words = term.split(" ")
+        if synonyms:
+            syn_terms = [
+                f'term = ("{word}" "{synonyms[word]}")' if word in synonyms else f'term = "{word}"' for word in words
+            ]
+            yield f'{procedure_definition} {{{{ {', '.join(syn_terms)} }}}}'
 
-        return f'< 71388002|Procedure| {{{{ term = ("{'" "'.join(terms)}")}}}}'
+        if len(words) > 2:
+            for i in reversed(range(1, len(words) - 1)):
+                word_comps = [
+                    f'term = ("{" ".join(word_comp)}")' for word_comp in combinations(words, i + 1)
+                ]  # TODO: Add synonyms to this
+                yield f'{procedure_definition} {{{{ {", ".join(word_comps)} }}}}'
+
+        yield f'{procedure_definition} {{{{ term = ("{'" "'.join(words)}")}}}}'
+        yield f'{procedure_definition} {{{{ term = ("{'" "'.join(words + keywords)}")}}}}'
 
     def forward(
         self,
         term: str,
+        synonyms: dict[str, str],
+        keywords: list[str],
     ) -> list[dict]:
         """
         Search SNOMED CT for procedures matching the given term.
 
         Args:
-            term (str): The search term to query.
-            limit (int): The maximum number of results to return.
-            semantic_tag (str): The semantic tag to filter results by.
+            term: The search term to query.
+            synonyms: A dictionary of synonyms for the words in the search term.
+            keywords: A list of keywords to search for.
 
         Returns:
-            list[dict]: A list of dictionaries containing procedure details.
+            list of dictionaries containing procedure details.
         """
         limit = 100
         params = {
@@ -109,8 +130,8 @@ class SNOMEDTool(ToolSettingMixin, Tool):
             "ecl": f'< 71388002|Procedure| {{{{ term = "{term}"}}}}',
         }
         with httpx.Client(base_url=self.base_url) as client:
-            for method in SNOMEDQueryMethod:
-                params["ecl"] = self._build_ecl_query(term, method)
+            for query in self._build_ecl_queries(term, synonyms, keywords):
+                params["ecl"] = query
                 response = client.get(f"{self.edition}/concepts", params=params)
                 response.raise_for_status()
                 items = response.json().get("items", [])

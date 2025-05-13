@@ -121,7 +121,7 @@ class SNOMEDTool(ToolSettingMixin, Tool):
             filtered_matches = [
                 {
                     "id": match["conceptId"],
-                    "term": match["pt"]["term"],
+                    # "term": match["pt"]["term"],
                     "fsn": match["fsn"]["term"],
                 }
                 for match in items

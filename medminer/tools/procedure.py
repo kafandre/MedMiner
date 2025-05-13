@@ -36,7 +36,7 @@ def extract_procedure_data(
         ...     {"patient_id": 1, ...},
         ...     {"patient_id": 2, ...},
         ... ]
-        >>> extract_medication_data("medication", data)
+        >>> extract_procedure_data(data)
     """
     return data
 

@@ -25,6 +25,7 @@ class BooleanTask(Task):
         - patient_id: The patient ID.
         - patient_filter: True if the patient information matches the filter query, false otherwise.
         - patient_information: The medical information of the patient that matched the query.
+        - filter_reference: The part of the text that was relevant for your decision in filtering.
         """
     )
     tools = [CSVTool, get_rxcui, get_va]

@@ -21,7 +21,7 @@ class BooleanTask(Task):
         3d. get the VA code and information for all medications. Use the rxcui of the medications.
         3e. look if the VA code of one of the medications matches the filter query. If yes, save the patient information.
 
-        save the the following columns:
+        save the following columns:
         - patient_id: The patient ID.
         - patient_filter: True if the patient information matches the filter query, false otherwise.
         - patient_information: The medical information of the patient that matched the query.

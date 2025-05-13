@@ -20,6 +20,8 @@ class BooleanTask(Task):
         3c. get the RXCUI for all medications. Use the active ingredient of the medications. If there are multiple RXCUI codes, choose the one that fits the best to the translated medication. Usually, the first candidate with a score of 1 is the best choice, but you can decide otherwise if you have reasonable grounds for another decision. If there are no codes, write an empty string.
         3d. get the VA code and information for all medications. Use the rxcui of the medications.
         3e. look if the VA code of one of the medications matches the filter query. If yes, save the patient information.
+        4. If the patient information contains a list of procedures, extract the procedures from the text and look if the procedure name matches the filter query. If yes, save the patient information.
+        5. If the patient information contains a list of diagnoses, extract the diagnoses from the text and look if the diagnosis name matches the filter query. If yes, save the patient information.
 
         save the following columns:
         - patient_id: The patient ID.

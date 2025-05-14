@@ -1,3 +1,7 @@
+"""
+The utility DefaultModel class for initializing models based on provided parameters.
+"""
+
 import os
 
 from smolagents import Model

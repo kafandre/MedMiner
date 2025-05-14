@@ -53,7 +53,7 @@ class BooleanTask(Task):
         settings.append(ToolSetting(id="boolean_query", label="Filter Query", type=str))
         return settings
 
-    def _buidl_prompt(self, data: str) -> str:
+    def _build_prompt(self, data: str) -> str:
         return dedent(
             f"""\
             Task name: {self.name}

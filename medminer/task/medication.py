@@ -1,3 +1,7 @@
+"""
+This module contains the MedicationTask class, which is used to extract and process medication data from text.
+"""
+
 from textwrap import dedent
 
 from medminer.task import Task, register_task

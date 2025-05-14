@@ -1,4 +1,4 @@
-site_name: project_name
+site_name: Medminer
 docs_dir: docs
 nav:
 - Getting Started:
@@ -26,7 +26,7 @@ extra:
     link: https://pypi.org/project/ # TODO change this to your project name
 
 extra_css:
-- css/code_select.css
+- assets/css/code_select.css
 - assets/css/fonts.css
 
 extra_javascript:
@@ -60,4 +60,4 @@ plugins:
       python:
         paths: ['project_name']
         options:
-          docstring_style: numpy
+          docstring_style: google

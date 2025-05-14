@@ -102,7 +102,7 @@ class Task(ABC):
 
         return list(settings.values())
 
-    def _buidl_prompt(self, data: str) -> str:
+    def _build_prompt(self, data: str) -> str:
         return dedent(
             f"""\
             Task name: {self.name}
@@ -123,7 +123,7 @@ class Task(ABC):
         Returns:
             The result of the task.
         """
-        return self.agent.run(self._buidl_prompt(data))
+        return self.agent.run(self._build_prompt(data))
 
 
 T = TypeVar("T", bound=Task)

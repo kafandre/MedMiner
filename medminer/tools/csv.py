@@ -67,7 +67,8 @@ class CSVTool(ToolSettingMixin, Tool):
 
         for row in data:
             for key, value in row.items():
-                row[key] = value.replace("\n", ";").replace("\r", "")
+                if isinstance(value, str):
+                    row[key] = value.replace("\n", ";").replace("\r", "")
 
         with open(file_path, "a") as csvfile:
             writer = DictWriter(csvfile, fieldnames=fieldnames)

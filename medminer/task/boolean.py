@@ -21,8 +21,7 @@ class BooleanTask(Task):
         2e. look if the VA code of one of the medications matches the filter query.
         3. If the patient information contains a list of procedures, extract the procedures from the text and look if the procedure name matches the filter query.
         4. If the patient information contains a list of diagnoses, extract the diagnoses from the text and look if the diagnosis name matches the filter query.
-        5. save the information as csv with the columns defined below.
-        6. Save every patient only once even if the patient information matches the filter query multiple times. If the patient information not matches the filter query, save the patient information as well but set the patient_filter to false.
+        5. Save the information as csv with the columns defined below. Use the `save_csv` tool. Save every patient only once even if the patient information matches the filter query multiple times. If the patient information not matches the filter query, save the patient information as well but set the patient_filter to false.
 
         Example 1:
             Query: "return all patients which where given antibiotics"

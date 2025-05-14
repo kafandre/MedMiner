@@ -11,11 +11,11 @@ class BooleanTask(Task):
     verbose_name = "Filter"
     prompt = dedent(
         """
-        Given a medical information of a patient, extract all patients which information match a given filter query. These are the steps you should follow to complete the task:
+        Given a medical information of a patient, extract all patients and label theme. These are the steps you should follow to complete the task:
 
         1. Check if the medical information of the patient matches the filter query.
         2a. If the patient information contains a list of medications, extract the medications from the text. The medication can be in any language.
-        2b. If the medication name is not in english, translate it to english and infer the name. Correct any misspellings in the process. Use the following format "Brand name or medication name (active ingredient)". e.g. "Aspirin (acetylsalicylic acid)".
+        2b. If the medication name is not in english, translate it to english and infer the name. Correct any misspellings in the process. Use the following format "Brand name or medication name (active ingredient)". e.g. "Aspirin (acetylsalicylic acid)". For this step no tool is needed.
         2c. get the RXCUI for all medications. Use the active ingredient of the medications. If there are multiple RXCUI codes, choose the one that fits the best to the translated medication. Usually, the first candidate with a score of 1 is the best choice, but you can decide otherwise if you have reasonable grounds for another decision. If there are no codes, write an empty string.
         2d. get the VA code and information for all medications. Use the rxcui of the medications.
         2e. look if the VA code of one of the medications matches the filter query.

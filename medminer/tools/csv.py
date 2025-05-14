@@ -11,7 +11,16 @@ class CSVTool(ToolSettingMixin, Tool):
     """A tool for saving data to a csv file."""
 
     name = "save_csv"
-    description = "Saves data to a csv file."
+    description = """
+    Saves data to a csv file.
+
+    Example:
+        >>> data = [
+        ...     {"patient_id": 1, "medication_name": "Aspirin"},
+        ...     {"patient_id": 2, "medication_name": "Paracetamol"},
+        ... ]
+        >>> save_csv("medication", data)
+    """
     inputs = {
         "task_name": {"type": "string", "description": "The name of the task."},
         "data": {

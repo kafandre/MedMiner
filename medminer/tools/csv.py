@@ -65,6 +65,11 @@ class CSVTool(ToolSettingMixin, Tool):
         if not file_path.parent.exists():
             file_path.parent.mkdir(parents=True)
 
+        for row in data:
+            for key in fieldnames:
+                if key not in row:
+                    row[key] = row.get(key, "").replace("\n", ";").replace("\r", "")
+
         with open(file_path, "a") as csvfile:
             writer = DictWriter(csvfile, fieldnames=fieldnames)
 

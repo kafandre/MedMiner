@@ -44,6 +44,8 @@ class Task(ABC):
         if "base_dir" not in kwargs:
             kwargs["base_dir"] = Path(tempfile.mkdtemp())
 
+        self._settings = kwargs
+
         tools = []
         for tool in self.tools:
             if not isinstance(tool, type):
@@ -100,6 +102,17 @@ class Task(ABC):
 
         return list(settings.values())
 
+    def _build_prompt(self, data: str) -> str:
+        return dedent(
+            f"""\
+            Task name: {self.name}
+            Prompt: \n{indent(self.prompt, " " * 4 * 5)}
+
+            {"-" * 80}
+            Data: \n{indent(data, " " * 4 * 5)}
+            """
+        )
+
     def run(self, data: str) -> Any:
         """
         Run the task.
@@ -110,17 +123,7 @@ class Task(ABC):
         Returns:
             The result of the task.
         """
-        return self.agent.run(
-            dedent(
-                f"""\
-                Task name: {self.name}
-                Prompt: \n{indent(self.prompt, " " * 4 * 5)}
-
-                {"-" * 80}
-                Data: \n{indent(data, " " * 4 * 5)}
-                """
-            )
-        )
+        return self.agent.run(self._build_prompt(data))
 
 
 T = TypeVar("T", bound=Task)

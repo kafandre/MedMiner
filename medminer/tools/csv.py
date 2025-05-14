@@ -15,7 +15,16 @@ class CSVTool(ToolSettingMixin, Tool):
     """A tool for saving data to a csv file."""
 
     name = "save_csv"
-    description = "Saves data to a csv file."
+    description = """
+    Saves data to a csv file.
+
+    Example:
+        >>> data = [
+        ...     {"patient_id": 1, "medication_name": "Aspirin"},
+        ...     {"patient_id": 2, "medication_name": "Paracetamol"},
+        ... ]
+        >>> save_csv("medication", data)
+    """
     inputs = {
         "task_name": {"type": "string", "description": "The name of the task."},
         "data": {
@@ -68,6 +77,11 @@ class CSVTool(ToolSettingMixin, Tool):
         file_path = self.base_dir / self.session_id / f"{self.task_name}.csv"
         if not file_path.parent.exists():
             file_path.parent.mkdir(parents=True)
+
+        for row in data:
+            for key, value in row.items():
+                if isinstance(value, str):
+                    row[key] = value.replace("\n", ";").replace("\r", "")
 
         with open(file_path, "a") as csvfile:
             writer = DictWriter(csvfile, fieldnames=fieldnames)

@@ -1,3 +1,7 @@
+"""
+This module contains ths HistoryTask class, which is used to extract medical history data from text.
+"""
+
 from textwrap import dedent
 
 from medminer.task import Task, register_task

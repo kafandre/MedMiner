@@ -1,3 +1,8 @@
+"""
+Gradio app for MedMiner.
+"""
+
+
 from typing import Any
 
 import gradio as gr

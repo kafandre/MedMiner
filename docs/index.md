@@ -1,4 +1,4 @@
-# project_name
+# MedMiner
 
 <p style="text-align:center;" markdown="1">
 _A Python package to extract mmedical information from text._ <br>

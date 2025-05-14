@@ -1,3 +1,7 @@
+"""
+This mmodule contains the base settings for the tools in the MedMiner project.
+"""
+
 from dataclasses import dataclass, field
 from typing import Any, Type
 

@@ -1,3 +1,7 @@
+"""
+This module contains tools for saving data to a csv file.
+"""
+
 from csv import DictWriter
 from itertools import chain
 from pathlib import Path

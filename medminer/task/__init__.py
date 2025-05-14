@@ -1,3 +1,7 @@
+"""
+This module contains various tools for extracting and processing medical data.
+"""
+
 from medminer.task.base import Task, TaskRegistry, register_task
 from medminer.task.boolean import BooleanTask
 from medminer.task.history import HistoryTask

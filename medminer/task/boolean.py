@@ -19,15 +19,23 @@ class BooleanTask(Task):
         3b. If the medication name is not in english, translate it to english and infer the name. Correct any misspellings in the process. Use the following format "Brand name or medication name (active ingredient)". e.g. "Aspirin (acetylsalicylic acid)".
         3c. get the RXCUI for all medications. Use the active ingredient of the medications. If there are multiple RXCUI codes, choose the one that fits the best to the translated medication. Usually, the first candidate with a score of 1 is the best choice, but you can decide otherwise if you have reasonable grounds for another decision. If there are no codes, write an empty string.
         3d. get the VA code and information for all medications. Use the rxcui of the medications.
-        3e. look if the VA code of one of the medications matches the filter query. If yes, save the patient information.
-        4. If the patient information contains a list of procedures, extract the procedures from the text and look if the procedure name matches the filter query. If yes, save the patient information.
-        5. If the patient information contains a list of diagnoses, extract the diagnoses from the text and look if the diagnosis name matches the filter query. If yes, save the patient information.
+        3e. look if the VA code of one of the medications matches the filter query.
+        4. If the patient information contains a list of procedures, extract the procedures from the text and look if the procedure name matches the filter query.
+        5. If the patient information contains a list of diagnoses, extract the diagnoses from the text and look if the diagnosis name matches the filter query.
+        6. Save every patient only once. If the patient information not matches the filter query, save the patient information as well but set the patient_filter to false.
+
+        Example 1:
+            Query: "return all patients which where given antibiotics"
+            Input: "Patient 1: Doxycyclin 200 mg  0-1-0"
+            Output: [
+                {"patient_id": 1, "patient_filter": True, "patient_information": "Doxycyclin 200 mg  0-1-0", "filter_reference": "Doxycyclin"},
+            ]
 
         save the following columns:
         - patient_id: The patient ID.
         - patient_filter: True if the patient information matches the filter query, false otherwise.
         - patient_information: The medical information of the patient that matched the query.
-        - filter_reference: The part of the text that was relevant for your decision in filtering.
+        - filter_reference: The part of the text that was relevant for your decision in filtering. If not applicable, write an empty string.
         """
     )
     tools = [CSVTool, get_rxcui, get_va]

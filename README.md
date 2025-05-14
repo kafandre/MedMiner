@@ -18,7 +18,15 @@ MedMiner leverages large language models (LLMs) and SmolAgents from Hugging Face
     code .
     ```
 
-3. **Reopen in Container:**
+3. **(Optionally) Enable Snowstorm server**
+
+to enable the snowstorm server for snomedct go to the `.env` file in the `.devcontainer` folder and add the following line.
+
+```bash
+COMPOSE_PROFILES=dev
+```
+
+4. **Reopen in Container:**
     - Press `F1` to open the command palette.
     - Type `Remote-Containers: Reopen in Container` and select it.
     - VS Code will build the Docker container defined in the `.devcontainer` folder and open the project inside the container.

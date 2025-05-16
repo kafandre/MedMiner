@@ -3,6 +3,8 @@ Gradio app for MedMiner.
 """
 
 
+import os
+from functools import partial
 from typing import Any
 
 import gradio as gr
@@ -36,6 +38,12 @@ with gr.Blocks(
 
         return state
 
+    def set_init_state(name: str) -> str:
+        if not name:
+            return ""
+
+        return os.getenv(name.upper(), "")
+
     title = gr.Markdown(
         """
         # MedMiner
@@ -55,8 +63,11 @@ with gr.Blocks(
                             if desc := tab.get("description"):
                                 gr.Markdown(desc)
                             for field in tab.get("fields", []):
-                                _field = gr.Textbox(**field.get("params", {}))
-                                _field.input(
+                                _field = gr.Textbox(
+                                    **field.get("params", {}), value=partial(set_init_state, field.get("id", ""))
+                                )
+                                gr.on(
+                                    [demo.load, _field.change],
                                     set_state,
                                     inputs=[
                                         model_settings,
@@ -91,8 +102,11 @@ with gr.Blocks(
                         if setting.ui.dependent and not any(task in setting.ui.dependent for task in tasks):
                             continue
 
-                        _field = gr.Textbox(label=setting.label, **setting.ui.params)
-                        _field.input(
+                        _field = gr.Textbox(
+                            label=setting.label, **setting.ui.params, value=partial(set_init_state, setting.id)
+                        )
+                        gr.on(
+                            [demo.load, tasks_input.change],
                             set_state,
                             inputs=[
                                 task_settings,

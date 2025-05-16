@@ -151,6 +151,8 @@ def process_sql(
     if not sql or not tasks:
         return {}
 
+    print(sql, model_settings, task_settings, tasks, agent)
+
     return {}
 
 

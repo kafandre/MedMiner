@@ -61,11 +61,11 @@ class SNOMEDTool(ToolSettingMixin, Tool):
     }
     output_type = "array"
     settings = [
-        ToolSetting(id="base_url", label="Base URL", type=str),
-        ToolSetting(id="edition", label="Edition", type=str),
+        ToolSetting(id="snowstorm_base_url", label="Base URL", type=str),
+        ToolSetting(id="snowstorm_edition", label="Edition", type=str),
     ]
-    base_url: str
-    edition: str
+    snowstorm_base_url: str
+    snowstorm_edition: str
 
     def _build_ecl_queries(
         self,
@@ -129,10 +129,10 @@ class SNOMEDTool(ToolSettingMixin, Tool):
             "termActive": "true",  # Recommended filter by SNOMED CT
             "ecl": f'< 71388002|Procedure| {{{{ term = "{term}"}}}}',
         }
-        with httpx.Client(base_url=self.base_url) as client:
+        with httpx.Client(base_url=self.snowstorm_base_url) as client:
             for query in self._build_ecl_queries(term, synonyms, keywords):
                 params["ecl"] = query
-                response = client.get(f"{self.edition}/concepts", params=params)
+                response = client.get(f"{self.snowstorm_edition}/concepts", params=params)
                 response.raise_for_status()
                 items = response.json().get("items", [])
 

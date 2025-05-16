@@ -64,7 +64,7 @@ with gr.Blocks(
                                 gr.Markdown(desc)
                             for field in tab.get("fields", []):
                                 _field = gr.Textbox(
-                                    **field.get("params", {}), value=partial(set_init_state, field.get("id"))
+                                    **field.get("params", {}), value=partial(set_init_state, field.get("id", ""))
                                 )
                                 gr.on(
                                     [demo.load, _field.change],

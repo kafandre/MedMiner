@@ -39,7 +39,7 @@ MODEL_TABS: list[ModelTabConfig] = [
             {"params": {"label": "Model name", "placeholder": "gpt-4.1"}, "id": "oai_model_id"},
             {
                 "params": {"label": "Endpoint", "placeholder": "https://<your-resource-name>.openai.azure.com/"},
-                "id": "oai_azure_endpoint",
+                "id": "oai_endpoint",
             },
             {"params": {"label": "API Version", "placeholder": "2024-12-01-preview"}, "id": "oai_api_version"},
             {"params": {"label": "API Key", "placeholder": "<api-key>", "type": "password"}, "id": "oai_api_key"},

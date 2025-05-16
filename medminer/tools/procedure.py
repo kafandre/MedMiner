@@ -61,11 +61,11 @@ class SNOMEDTool(ToolSettingMixin, Tool):
     }
     output_type = "array"
     settings = [
-        ToolSetting(id="base_url", label="Base URL", type=str),
-        ToolSetting(id="edition", label="Edition", type=str),
+        ToolSetting(id="snowstorm_base_url", label="Base URL", type=str),
+        ToolSetting(id="snowstorm_edition", label="Edition", type=str),
     ]
-    base_url: str
-    edition: str
+    snowstorm_base_url: str
+    snowstorm_edition: str
 
     def _build_ecl_queries(
         self,

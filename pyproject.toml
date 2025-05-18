@@ -23,7 +23,7 @@ Bugtracker = "https://github.com/aidh-ms/MedMiner/issues"
 python = "^3.13"
 smolagents = {extras = ["transformers"], version = "^1.16.1"}
 httpx = "^0.28.1"
-torch = "^2.6.0"
+torch = "^2.7.0"
 gradio = "^5.29.1"
 pandas = "^2.2.3"
 pandas-stubs = "^2.2.3.250308"

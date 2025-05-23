@@ -24,7 +24,7 @@ python = "^3.13"
 smolagents = {extras = ["transformers"], version = "^1.16.1"}
 httpx = "^0.28.1"
 torch = "^2.7.0"
-gradio = "^5.30.0"
+gradio = "^5.31.0"
 pandas = "^2.2.3"
 pandas-stubs = "^2.2.3.250308"
 pre-commit = "^4.2.0"

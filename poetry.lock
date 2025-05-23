@@ -934,15 +934,15 @@ dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
 name = "gradio"
-version = "5.30.0"
+version = "5.31.0"
 description = "Python library for easily interacting with trained machine learning models"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "platform_python_implementation == \"PyPy\""
 files = [
-    {file = "gradio-5.30.0-py3-none-any.whl", hash = "sha256:47508c4a69789f9433a1d95c5ffb5893570573431d05754394e2ffeaa6fbc2d3"},
-    {file = "gradio-5.30.0.tar.gz", hash = "sha256:83d2dfaf5ecb2911e1aa61ccbee4aa62b7bde112396fb107237d5d8134b6131b"},
+    {file = "gradio-5.31.0-py3-none-any.whl", hash = "sha256:4a31956c7290ce1277db07f15f197b602df2e7be147083136265d52e7887b156"},
+    {file = "gradio-5.31.0.tar.gz", hash = "sha256:fba0c84d69cf489938eb64bef4c19d53300eb9af62e8cc0b12e02ae9072b7623"},
 ]
 
 [package.dependencies]
@@ -977,7 +977,7 @@ urllib3 = {version = ">=2.0,<3.0", markers = "sys_platform == \"emscripten\""}
 uvicorn = {version = ">=0.14.0", markers = "sys_platform != \"emscripten\""}
 
 [package.extras]
-mcp = ["mcp (>=1.6.0,<2.0.0)", "pydantic (>=2.11) ; sys_platform != \"emscripten\""]
+mcp = ["mcp (==1.9.0)", "pydantic (>=2.11) ; sys_platform != \"emscripten\""]
 oauth = ["authlib", "itsdangerous"]
 
 [[package]]
@@ -5770,4 +5770,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "ecde97ce302ead0e3bb63386767a54c92962ce7b19ad8bf318de4da62a8c7dc7"
+content-hash = "5b2d42e30fc64f2f263c023880b44ca57a2c8c23c8cbd62e3c289656c2b8bb52"

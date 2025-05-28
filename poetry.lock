@@ -4663,15 +4663,15 @@ files = [
 
 [[package]]
 name = "smolagents"
-version = "1.16.1"
+version = "1.17.0"
 description = "🤗 smolagents: a barebones library for agents. Agents write python code to call tools or orchestrate other agents."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "platform_python_implementation == \"PyPy\""
 files = [
-    {file = "smolagents-1.16.1-py3-none-any.whl", hash = "sha256:21407b39c1292b0c9b326c54042e1fe88f5bed23e095f31bd75cc467cd89d083"},
-    {file = "smolagents-1.16.1.tar.gz", hash = "sha256:189f61332fb71ce2e9a5fd6f9a111cdce1333b3991a04e7044c510630e338978"},
+    {file = "smolagents-1.17.0-py3-none-any.whl", hash = "sha256:b6b7853d454c24c949cb306858523e97792310b9ab422a61cba5ccbab48f01c1"},
+    {file = "smolagents-1.17.0.tar.gz", hash = "sha256:8d4ec4ccb759986560299e5489eab530282c68a4110820919d13a69e642f2b5b"},
 ]
 
 [package.dependencies]
@@ -4696,7 +4696,7 @@ docker = ["docker (>=7.1.0)", "websocket-client"]
 e2b = ["e2b-code-interpreter (>=1.0.3)", "python-dotenv (>=1.0.1)"]
 gradio = ["gradio (>=5.14.0)"]
 litellm = ["litellm (>=1.60.2)"]
-mcp = ["mcp", "mcpadapt (>=0.0.19)"]
+mcp = ["mcp", "mcpadapt (>=0.1.8)"]
 mlx-lm = ["mlx-lm"]
 openai = ["openai (>=1.58.1)"]
 quality = ["ruff (>=0.9.0)"]
@@ -5775,4 +5775,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "927a64daa0b314cc89da11ed0be5855ca405fb12eb657047569aec67b29c957d"
+content-hash = "05f9f0c01c98181d250eeb39d6223bdd3dd64ebd5698466ac44b4ab41c503ea2"

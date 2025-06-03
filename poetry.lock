@@ -938,15 +938,15 @@ dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
 name = "gradio"
-version = "5.32.0"
+version = "5.32.1"
 description = "Python library for easily interacting with trained machine learning models"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "platform_python_implementation == \"PyPy\""
 files = [
-    {file = "gradio-5.32.0-py3-none-any.whl", hash = "sha256:45fdb15784f4be19eca2beb1d45d107238ca614c177b20b0e3d4f2d6aee81bae"},
-    {file = "gradio-5.32.0.tar.gz", hash = "sha256:c0b151ac039567123b8f9e058aa3256aadc906ecf7b79c26534aa81dcc7ba313"},
+    {file = "gradio-5.32.1-py3-none-any.whl", hash = "sha256:994c9437c1abc2663d7a9ec3bd2f0dfe6e4279bfc3cdca1dd265bf6d21722bcc"},
+    {file = "gradio-5.32.1.tar.gz", hash = "sha256:6026fc458d6e642e1832c7becc17d9e17439c41d29bf14cb39dfb23365e759c6"},
 ]
 
 [package.dependencies]
@@ -5776,4 +5776,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "88a0847243f167821ba1aaeafdbeb245c974de7656fb80f8daab6d7075cc8171"
+content-hash = "04c85f805ea8ea095d0bac00e04581bb2b94a3afb2c0de626a30d1a9f11199b2"

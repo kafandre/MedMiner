@@ -58,6 +58,6 @@ plugins:
 - mkdocstrings:
     handlers:
       python:
-        paths: ['project_name']
+        paths: ['medminer']
         options:
           docstring_style: google

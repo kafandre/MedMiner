@@ -20,10 +20,10 @@ Changelog = "https://github.com/aidh-ms/MedMiner/releases"
 Bugtracker = "https://github.com/aidh-ms/MedMiner/issues"
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 smolagents = {extras = ["transformers"], version = "^1.18.0"}
 httpx = "^0.28.1"
-torch = "^2.7.1"
+torch = "^2.2.0"
 gradio = "^5.34.1"
 pandas = "^2.3.0"
 pandas-stubs = "^2.2.3.250527"
@@ -60,7 +60,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
